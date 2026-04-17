@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Card Picker — Pravanjan</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;1,9..144,300&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0f0e0c;
+  --ink2:#4a4844;
+  --ink3:#8a8784;
+  --paper:#f7f4ef;
+  --paper2:#ede9e2;
+  --paper3:#e0dbd2;
+  --gold:#b8860b;
+  --gold-light:#f5e9c4;
+  --green:#2d6a4f;
+  --green-light:#d8f3dc;
+  --amber:#92400e;
+  --amber-light:#fef3c7;
+  --red:#991b1b;
+  --red-light:#fee2e2;
+  --blue:#1e3a5f;
+  --blue-light:#dbeafe;
+  --radius:6px;
+  --radius-lg:12px;
+}
+@media(prefers-color-scheme:dark){
+  :root{
+    --ink:#f0ece4;
+    --ink2:#b5b0a8;
+    --ink3:#6e6b65;
+    --paper:#18170f;
+    --paper2:#211f16;
+    --paper3:#2c2a1e;
+    --gold:#d4a843;
+    --gold-light:#2c2410;
+    --green:#6ee7a0;
+    --green-light:#0a2e1a;
+    --amber:#fbbf24;
+    --amber-light:#2c1a06;
+    --red:#f87171;
+    --red-light:#2c0a0a;
+    --blue:#93c5fd;
+    --blue-light:#0d1f38;
+  }
+}
+body{
+  font-family:'DM Mono',monospace;
+  background:var(--paper);
+  color:var(--ink);
+  min-height:100vh;
+  padding:2rem 1rem 4rem;
+}
+.container{max-width:560px;margin:0 auto;}
+
+header{margin-bottom:2.5rem;}
+.header-label{font-size:11px;letter-spacing:0.15em;color:var(--ink3);text-transform:uppercase;margin-bottom:0.5rem;}
+h1{font-family:'Fraunces',serif;font-size:36px;font-weight:300;line-height:1.1;color:var(--ink);margin-bottom:0.4rem;}
+h1 em{font-style:italic;color:var(--gold);}
+.header-meta{font-size:11px;color:var(--ink3);display:flex;gap:1rem;flex-wrap:wrap;margin-top:0.75rem;}
+.meta-chip{background:var(--paper3);padding:3px 8px;border-radius:99px;}
+
+.search-wrap{position:relative;margin-bottom:2rem;}
+input[type="text"]{
+  width:100%;
+  padding:14px 16px;
+  font-family:'DM Mono',monospace;
+  font-size:15px;
+  background:var(--paper2);
+  border:1px solid var(--paper3);
+  border-radius:var(--radius-lg);
+  color:var(--ink);
+  outline:none;
+  transition:border-color 0.15s,box-shadow 0.15s;
+}
+input[type="text"]:focus{
+  border-color:var(--gold);
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--gold) 20%,transparent);
+}
+input[type="text"]::placeholder{color:var(--ink3);}
+.search-hint{font-size:11px;color:var(--ink3);margin-top:6px;padding-left:2px;}
+
+.pills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:2rem;}
+.pill{
+  font-family:'DM Mono',monospace;
+  font-size:11px;
+  padding:5px 12px;
+  border-radius:99px;
+  border:1px solid var(--paper3);
+  background:var(--paper2);
+  color:var(--ink2);
+  cursor:pointer;
+  transition:all 0.12s;
+  letter-spacing:0.03em;
+}
+.pill:hover{border-color:var(--gold);color:var(--ink);background:var(--gold-light);}
+
+.results{display:flex;flex-direction:column;gap:12px;}
+
+.card-rec{
+  background:var(--paper2);
+  border:1px solid var(--paper3);
+  border-radius:var(--radius-lg);
+  padding:1.25rem;
+  transition:transform 0.12s;
+  animation:fadeUp 0.2s ease both;
+}
+.card-rec:hover{transform:translateY(-1px);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.rec-header{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:10px;}
+.rec-rank{
+  font-size:10px;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  padding:3px 8px;
+  border-radius:99px;
+  font-weight:500;
+  flex-shrink:0;
+}
+.rank-best{background:var(--gold-light);color:var(--gold);}
+.rank-alt{background:var(--green-light);color:var(--green);}
+.rank-cond{background:var(--amber-light);color:var(--amber);}
+
+.rec-card-name{
+  font-family:'Fraunces',serif;
+  font-size:18px;
+  font-weight:300;
+  color:var(--ink);
+  line-height:1.2;
+}
+.rec-card-num{font-size:11px;color:var(--ink3);margin-top:2px;font-family:'DM Mono',monospace;}
+
+.rec-rate{
+  font-size:22px;
+  font-family:'Fraunces',serif;
+  font-weight:500;
+  color:var(--gold);
+  margin-bottom:6px;
+}
+.rec-note{font-size:12px;color:var(--ink2);line-height:1.6;}
+.rec-condition{
+  margin-top:8px;
+  font-size:11px;
+  color:var(--amber);
+  background:var(--amber-light);
+  padding:5px 10px;
+  border-radius:var(--radius);
+  line-height:1.5;
+}
+.rec-condition::before{content:"⚠ ";}
+
+.empty-state{
+  text-align:center;
+  padding:3rem 1rem;
+  color:var(--ink3);
+  font-size:13px;
+  line-height:1.8;
+}
+.empty-state .big{font-family:'Fraunces',serif;font-size:32px;color:var(--paper3);font-weight:300;display:block;margin-bottom:0.5rem;}
+
+/* Divider */
+.section-divider{
+  display:flex;align-items:center;gap:12px;
+  margin:2.5rem 0 1.5rem;
+  font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink3);
+}
+.section-divider::before,.section-divider::after{content:'';flex:1;height:1px;background:var(--paper3);}
+
+/* AI Refresh Panel */
+.refresh-panel{
+  background:var(--paper2);
+  border:1px solid var(--paper3);
+  border-radius:var(--radius-lg);
+  padding:1.25rem;
+}
+.refresh-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;}
+.refresh-title{font-size:13px;font-weight:500;color:var(--ink);}
+.refresh-sub{font-size:11px;color:var(--ink3);margin-bottom:1rem;line-height:1.6;}
+.last-updated{font-size:11px;color:var(--ink3);}
+
+.btn{
+  font-family:'DM Mono',monospace;
+  font-size:12px;
+  padding:8px 16px;
+  border-radius:var(--radius);
+  border:1px solid var(--paper3);
+  background:var(--paper);
+  color:var(--ink);
+  cursor:pointer;
+  transition:all 0.12s;
+  letter-spacing:0.03em;
+}
+.btn:hover{border-color:var(--gold);background:var(--gold-light);color:var(--gold);}
+.btn:disabled{opacity:0.4;cursor:not-allowed;}
+.btn-primary{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+.btn-primary:hover{background:var(--gold);border-color:var(--gold);color:var(--paper);}
+
+.api-input-wrap{margin-bottom:0.75rem;}
+.api-label{font-size:11px;color:var(--ink3);margin-bottom:4px;display:block;}
+input[type="password"]{
+  width:100%;
+  padding:9px 12px;
+  font-family:'DM Mono',monospace;
+  font-size:12px;
+  background:var(--paper);
+  border:1px solid var(--paper3);
+  border-radius:var(--radius);
+  color:var(--ink);
+  outline:none;
+}
+input[type="password"]:focus{border-color:var(--gold);}
+
+.ai-log{
+  margin-top:0.75rem;
+  font-size:11px;
+  color:var(--green);
+  background:var(--green-light);
+  border-radius:var(--radius);
+  padding:8px 12px;
+  line-height:1.6;
+  display:none;
+}
+.ai-error{color:var(--red);background:var(--red-light);}
+
+.changelog{margin-top:0.75rem;}
+.changelog-item{
+  font-size:11px;
+  color:var(--ink2);
+  padding:5px 0;
+  border-bottom:1px solid var(--paper3);
+  line-height:1.5;
+}
+.changelog-item:last-child{border-bottom:none;}
+.changelog-date{color:var(--ink3);margin-right:8px;}
+
+/* Footer */
+footer{margin-top:3rem;font-size:11px;color:var(--ink3);text-align:center;line-height:1.8;}
+</style>
+</head>
+<body>
+<div style="max-width:560px;margin:0 auto;padding:1rem 0 0;"><a href="../index.html" style="font-size:11px;color:var(--ink3);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;">← Portfolio</a></div>
+<div class="container">
+
+<header>
+  <p class="header-label">Pravanjan · Card Picker</p>
+  <h1>Which card<br>for <em>this</em>?</h1>
+  <div class="header-meta">
+    <span class="meta-chip">CIBIL 799</span>
+    <span class="meta-chip">37 LPA · Accenture</span>
+    <span class="meta-chip" id="card-count-chip">14 cards tracked</span>
+    <span class="meta-chip" id="data-date-chip">Apr 2026</span>
+  </div>
+</header>
+
+<div class="search-wrap">
+  <input type="text" id="search-input" placeholder="What are you buying? e.g. swiggy, petrol, Amazon…" autofocus/>
+  <p class="search-hint">Type anything — category, merchant, or activity.</p>
+</div>
+
+<div class="pills" id="quick-pills"></div>
+
+<div class="results" id="results">
+  <div class="empty-state">
+    <span class="big">⬆</span>
+    Type what you're buying above<br>and get the best card instantly.
+  </div>
+</div>
+
+<div class="section-divider">Quarterly AI refresh</div>
+
+<div class="refresh-panel">
+  <div class="refresh-header">
+    <span class="refresh-title">Auto-update card benefits</span>
+    <span class="last-updated" id="last-updated-label">Never updated</span>
+  </div>
+  <p class="refresh-sub">Credit cards downgrade quietly. Every quarter, paste your API key and hit refresh — Claude will check each card's current benefits and update the rules automatically.</p>
+
+  <div class="api-input-wrap">
+    <label class="api-label" for="api-key-input">Anthropic API key (stored locally, never sent anywhere else)</label>
+    <input type="password" id="api-key-input" placeholder="sk-ant-…"/>
+  </div>
+
+  <div style="display:flex;gap:8px;flex-wrap:wrap;">
+    <button class="btn btn-primary" id="refresh-btn" onclick="runAIRefresh()">Refresh now →</button>
+    <button class="btn" onclick="showChangeLog()">View changelog</button>
+    <button class="btn" onclick="resetToDefaults()">Reset to defaults</button>
+  </div>
+
+  <div class="ai-log" id="ai-log"></div>
+  <div class="changelog" id="changelog-wrap" style="display:none;"></div>
+</div>
+
+<footer>
+  Data stored locally in your browser · No server · No tracking<br>
+  Last PDF sync: April 2026
+</footer>
+
+</div>
+
+<script>
+/* ─── DEFAULT CARD DATA (from your PDF) ─── */
+const DEFAULT_CARDS = [
+  {
+    id:"sbi_cashback",
+    name:"SBI Cashback",
+    number:"7378",
+    categories:["online shopping","amazon","flipkart","myntra","utilities","bills","electricity","recharge","subscription"],
+    keywords:["online","shop","ecommerce","pay","bill","utility","electricity","recharge","subscription","netflix","prime"],
+    rate:"5% cashback",
+    notes:"Cap ₹2k/mo online + ₹2k offline. Use for big-ticket first.",
+    rank:"BEST",
+    condition:null
+  },
+  {
+    id:"icici_amazon",
+    name:"ICICI Amazon Pay",
+    number:"3008",
+    categories:["amazon","online shopping"],
+    keywords:["amazon","online","ecommerce","shop"],
+    rate:"5% cashback",
+    notes:"Use after SBI Cashback cap is hit. Amazon Prime required.",
+    rank:"ALT",
+    condition:"Only after SBI 7378 ₹2k online cap is hit"
+  },
+  {
+    id:"hdfc_swiggy",
+    name:"HDFC Swiggy",
+    number:"6207",
+    categories:["swiggy","food delivery","instamart","groceries"],
+    keywords:["swiggy","food","delivery","zomato","instamart","grocery","order"],
+    rate:"10% cashback",
+    notes:"Statement credit. Card discontinued but still earns.",
+    rank:"BEST",
+    condition:null
+  },
+  {
+    id:"icici_rubyx_amex",
+    name:"ICICI Rubyx AmEx",
+    number:"2004",
+    categories:["dining","restaurant","food"],
+    keywords:["restaurant","dining","eat","dinner","lunch","cafe","bistro","hotel dining"],
+    rate:"15%+ off",
+    notes:"EazyDiner perks at 800+ restaurants. Best for sit-down dining.",
+    rank:"BEST",
+    condition:null
+  },
+  {
+    id:"tata_neu",
+    name:"Tata Neu Infinity",
+    number:"2321",
+    categories:["upi","bigbasket","croma","tata","groceries"],
+    keywords:["upi","bigbasket","croma","tata","grocery","supermarket"],
+    rate:"1.5% NeuCoins",
+    notes:"Locked to Tata ecosystem. Use Tata Neu UPI ID for 1.5% vs 0.5%.",
+    rank:"ALT",
+    condition:null
+  },
+  {
+    id:"hdfc_regalia",
+    name:"HDFC Regalia Gold",
+    number:"8912",
+    categories:["fuel","petrol","international lounge","lounge","travel","default","general","myntra","nykaa"],
+    keywords:["petrol","fuel","diesel","lounge","travel","international","default","general","myntra","nykaa","reliance"],
+    rate:"~1.25% + perks",
+    notes:"All-rounder. 5X on Myntra, Nykaa, Reliance Digital. 1% fuel surcharge waiver ₹400–₹5k.",
+    rank:"BEST",
+    condition:null
+  },
+  {
+    id:"scapia",
+    name:"Scapia Visa",
+    number:"8286",
+    categories:["international","forex","travel abroad","lounge domestic"],
+    keywords:["international","forex","abroad","foreign","travel","currency","dollar","euro","lounge","airport"],
+    rate:"0% forex markup",
+    notes:"Zero markup abroad. No coins earned. Best for international swipes.",
+    rank:"BEST",
+    condition:"Spend ₹20k/mo to activate domestic lounge access"
+  },
+  {
+    id:"niyo",
+    name:"Niyo Debit",
+    number:"2649",
+    categories:["international atm","atm abroad","forex atm"],
+    keywords:["atm","withdraw","cash abroad","international atm","forex cash"],
+    rate:"0% forex",
+    notes:"Use for ATM withdrawals abroad. Debit, not credit.",
+    rank:"ALT",
+    condition:null
+  },
+  {
+    id:"sbi_aurum",
+    name:"SBI Aurum",
+    number:"9087",
+    categories:["international lounge overflow","lounge overflow","airport"],
+    keywords:["lounge overflow","airport lounge","dreamfolks","international airport"],
+    rate:"Unlimited lounge",
+    notes:"Dream Folks, 1000+ airports. 16 domestic/yr. Use when Regalia quota done.",
+    rank:"ALT",
+    condition:null
+  },
+  {
+    id:"icici_rubyx_mc",
+    name:"ICICI Rubyx Mastercard",
+    number:"4001",
+    categories:["movies","cinema","bookmyshow","inox","pvr"],
+    keywords:["movie","cinema","film","bookmyshow","bms","inox","pvr","multiplex"],
+    rate:"25% off",
+    notes:"₹150 off per booking, 2x/month on BMS & INOX.",
+    rank:"BEST",
+    condition:null
+  }
+];
+
+const QUICK_CATEGORIES = [
+  "Swiggy / Food","Amazon","Fuel / Petrol","Movies","Dining out",
+  "International spend","Airport lounge","Utilities / Bills","UPI payment","Groceries"
+];
+
+/* ─── STATE ─── */
+let cards = JSON.parse(localStorage.getItem("cp_cards") || "null") || JSON.parse(JSON.stringify(DEFAULT_CARDS));
+let changelog = JSON.parse(localStorage.getItem("cp_changelog") || "[]");
+let lastUpdated = localStorage.getItem("cp_last_updated") || null;
+
+/* ─── INIT ─── */
+renderPills();
+updateMeta();
+
+function updateMeta(){
+  document.getElementById("last-updated-label").textContent = lastUpdated ? "Updated "+lastUpdated : "Never updated";
+}
+
+function renderPills(){
+  const wrap = document.getElementById("quick-pills");
+  wrap.innerHTML = "";
+  QUICK_CATEGORIES.forEach(cat => {
+    const p = document.createElement("button");
+    p.className = "pill";
+    p.textContent = cat;
+    p.onclick = () => {
+      document.getElementById("search-input").value = cat;
+      search(cat);
+    };
+    wrap.appendChild(p);
+  });
+}
+
+/* ─── SEARCH ─── */
+document.getElementById("search-input").addEventListener("input", e => search(e.target.value));
+
+function search(query){
+  const q = query.toLowerCase().trim();
+  const resultsEl = document.getElementById("results");
+
+  if(!q){
+    resultsEl.innerHTML = `<div class="empty-state"><span class="big">⬆</span>Type what you're buying above<br>and get the best card instantly.</div>`;
+    return;
+  }
+
+  /* Score each card */
+  const scored = cards.map(card => {
+    let score = 0;
+    const allTerms = [...card.categories, ...card.keywords];
+    allTerms.forEach(term => {
+      if(q.includes(term.toLowerCase())) score += 3;
+      else if(term.toLowerCase().includes(q)) score += 2;
+      else {
+        const qWords = q.split(/\s+/);
+        qWords.forEach(w => { if(term.toLowerCase().includes(w) && w.length > 2) score += 1; });
+      }
+    });
+    /* Rank bonus */
+    if(card.rank === "BEST") score += 0.5;
+    return {...card, score};
+  }).filter(c => c.score > 0).sort((a,b) => b.score - a.score);
+
+  /* Fallback: show default card */
+  if(!scored.length){
+    const def = cards.find(c => c.id === "hdfc_regalia") || cards[0];
+    resultsEl.innerHTML = `
+      <div class="card-rec" style="animation-delay:0s">
+        <div class="rec-header">
+          <div><div class="rec-card-name">${def.name}</div><div class="rec-card-num">····${def.number}</div></div>
+          <span class="rec-rank rank-alt">Default</span>
+        </div>
+        <div class="rec-rate">${def.rate}</div>
+        <div class="rec-note">No specific match found — use your all-rounder. ${def.notes}</div>
+      </div>`;
+    return;
+  }
+
+  const top = scored.slice(0, 3);
+  resultsEl.innerHTML = top.map((c, i) => {
+    const rankClass = c.rank === "BEST" ? "rank-best" : c.rank === "ALT" ? "rank-alt" : "rank-cond";
+    const rankLabel = i === 0 ? (c.rank === "BEST" ? "Best pick" : "Good pick") : c.rank === "ALT" ? "Alt pick" : "Conditional";
+    return `
+    <div class="card-rec" style="animation-delay:${i*0.06}s">
+      <div class="rec-header">
+        <div>
+          <div class="rec-card-name">${c.name}</div>
+          <div class="rec-card-num">····${c.number}</div>
+        </div>
+        <span class="rec-rank ${rankClass}">${rankLabel}</span>
+      </div>
+      <div class="rec-rate">${c.rate}</div>
+      <div class="rec-note">${c.notes}</div>
+      ${c.condition ? `<div class="rec-condition">${c.condition}</div>` : ""}
+    </div>`;
+  }).join("");
+}
+
+/* ─── AI REFRESH ─── */
+async function runAIRefresh(){
+  const apiKey = document.getElementById("api-key-input").value.trim();
+  if(!apiKey || !apiKey.startsWith("sk-ant-")){
+    showLog("Please enter a valid Anthropic API key (starts with sk-ant-)", true);
+    return;
+  }
+
+  const btn = document.getElementById("refresh-btn");
+  btn.disabled = true;
+  btn.textContent = "Checking cards…";
+  showLog("Querying Claude about current card benefits…", false, true);
+
+  const cardList = cards.map(c => `- ${c.name} (${c.number}): currently ${c.rate}`).join("\n");
+
+  const prompt = `You are a credit card benefits expert in India. The user has these cards:
+${cardList}
+
+It is ${new Date().toLocaleDateString("en-IN",{month:"long",year:"numeric"})}. For each card, confirm if the stated benefit/rate is still current or has changed. Focus on: cashback rates, lounge access rules, caps, and any major downgrades announced in the last 6 months.
+
+Respond ONLY as a JSON array. Each element: {"id": "<card_id>", "changed": true/false, "new_rate": "<rate if changed, else null>", "new_notes": "<updated notes if changed, else null>", "change_summary": "<one line of what changed, or null>"}
+
+Card IDs: ${cards.map(c=>c.id).join(", ")}
+
+If you are not certain about a change, set changed: false. Be conservative.`;
+
+  try {
+    const resp = await fetch("https://api.anthropic.com/v1/messages", {
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json",
+        "x-api-key": apiKey,
+        "anthropic-version":"2023-06-01"
+      },
+      body: JSON.stringify({
+        model:"claude-sonnet-4-20250514",
+        max_tokens:1500,
+        messages:[{role:"user", content: prompt}]
+      })
+    });
+
+    if(!resp.ok){
+      const err = await resp.json();
+      throw new Error(err.error?.message || "API error "+resp.status);
+    }
+
+    const data = await resp.json();
+    const text = data.content.filter(b=>b.type==="text").map(b=>b.text).join("");
+    const clean = text.replace(/```json|```/g,"").trim();
+    const updates = JSON.parse(clean);
+
+    let changedCount = 0;
+    const date = new Date().toLocaleDateString("en-IN",{day:"numeric",month:"short",year:"numeric"});
+
+    updates.forEach(u => {
+      if(u.changed){
+        const card = cards.find(c=>c.id===u.id);
+        if(card){
+          const old = {rate: card.rate, notes: card.notes};
+          if(u.new_rate) card.rate = u.new_rate;
+          if(u.new_notes) card.notes = u.new_notes;
+          changelog.unshift({
+            date,
+            card: card.name,
+            summary: u.change_summary || `Rate updated to ${u.new_rate}`
+          });
+          changedCount++;
+        }
+      }
+    });
+
+    lastUpdated = date;
+    localStorage.setItem("cp_cards", JSON.stringify(cards));
+    localStorage.setItem("cp_changelog", JSON.stringify(changelog.slice(0,30)));
+    localStorage.setItem("cp_last_updated", lastUpdated);
+
+    updateMeta();
+    if(changedCount > 0){
+      showLog(`Done — ${changedCount} card(s) updated. Re-run your search to see new recommendations.`);
+    } else {
+      showLog("Done — all card benefits appear current. No changes needed.");
+    }
+
+    /* Re-run current search */
+    const q = document.getElementById("search-input").value;
+    if(q) search(q);
+
+  } catch(err){
+    showLog("Error: " + err.message, true);
+  }
+
+  btn.disabled = false;
+  btn.textContent = "Refresh now →";
+}
+
+function showLog(msg, isError=false, loading=false){
+  const el = document.getElementById("ai-log");
+  el.style.display = "block";
+  el.className = "ai-log" + (isError ? " ai-error" : "");
+  el.textContent = (loading ? "⟳ " : isError ? "✕ " : "✓ ") + msg;
+}
+
+function showChangeLog(){
+  const wrap = document.getElementById("changelog-wrap");
+  if(wrap.style.display !== "none"){ wrap.style.display = "none"; return; }
+  if(!changelog.length){
+    wrap.innerHTML = `<div class="changelog-item" style="color:var(--ink3)">No changes recorded yet.</div>`;
+  } else {
+    wrap.innerHTML = changelog.map(c =>
+      `<div class="changelog-item"><span class="changelog-date">${c.date}</span>${c.card}: ${c.summary}</div>`
+    ).join("");
+  }
+  wrap.style.display = "block";
+}
+
+function resetToDefaults(){
+  if(!confirm("Reset all card data to April 2026 defaults? Your changelog will be kept.")) return;
+  cards = JSON.parse(JSON.stringify(DEFAULT_CARDS));
+  localStorage.setItem("cp_cards", JSON.stringify(cards));
+  lastUpdated = null;
+  localStorage.removeItem("cp_last_updated");
+  updateMeta();
+  document.getElementById("ai-log").style.display = "none";
+  const q = document.getElementById("search-input").value;
+  if(q) search(q);
+}
+</script>
+</body>
+</html>
