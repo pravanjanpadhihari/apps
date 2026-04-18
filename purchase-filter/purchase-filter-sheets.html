@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Should I Buy This?</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #ffffff;
+      --bg-secondary: #f5f5f4;
+      --bg-success: #eaf3de;
+      --bg-danger: #fcebeb;
+      --bg-warning: #faeeda;
+      --bg-info: #e6f1fb;
+      --text-primary: #1a1a18;
+      --text-secondary: #5f5e5a;
+      --text-tertiary: #888780;
+      --text-success: #3b6d11;
+      --text-danger: #a32d2d;
+      --text-warning: #854f0b;
+      --text-info: #185fa5;
+      --border: rgba(0,0,0,0.12);
+      --border-md: rgba(0,0,0,0.2);
+      --border-success: rgba(59,109,17,0.3);
+      --border-danger: rgba(163,45,45,0.3);
+      --border-warning: rgba(133,79,11,0.3);
+      --border-info: rgba(24,95,165,0.3);
+      --radius-md: 8px;
+      --radius-lg: 12px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #1c1c1a;
+        --bg-secondary: #2a2a27;
+        --bg-success: #173404;
+        --bg-danger: #501313;
+        --bg-warning: #412402;
+        --bg-info: #042c53;
+        --text-primary: #f0efea;
+        --text-secondary: #b4b2a9;
+        --text-tertiary: #888780;
+        --text-success: #c0dd97;
+        --text-danger: #f7c1c1;
+        --text-warning: #fac775;
+        --text-info: #b5d4f4;
+        --border: rgba(255,255,255,0.1);
+        --border-md: rgba(255,255,255,0.2);
+        --border-success: rgba(192,221,151,0.25);
+        --border-danger: rgba(247,193,193,0.25);
+        --border-warning: rgba(250,199,117,0.25);
+        --border-info: rgba(181,212,244,0.25);
+      }
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    .card {
+      background: var(--bg);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      width: 100%;
+      max-width: 480px;
+    }
+
+    .back-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 12px; color: var(--text-tertiary); text-decoration: none;
+      margin-bottom: 1.5rem; letter-spacing: 0.05em;
+    }
+    .back-link:hover { color: var(--text-secondary); }
+
+    /* ── SHEETS CONFIG BANNER ── */
+    .sheets-banner {
+      background: var(--bg-info);
+      border: 0.5px solid var(--border-info);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      margin-bottom: 1.5rem;
+      font-size: 13px;
+      color: var(--text-info);
+      line-height: 1.5;
+    }
+    .sheets-banner strong { font-weight: 500; }
+    .sheets-input-wrap { display: flex; gap: 8px; margin-top: 8px; }
+    .sheets-input {
+      flex: 1; padding: 8px 10px; font-size: 12px;
+      border: 0.5px solid var(--border-md);
+      border-radius: var(--radius-md);
+      background: var(--bg); color: var(--text-primary);
+      font-family: inherit; outline: none;
+    }
+    .sheets-input:focus { border-color: var(--text-info); }
+    .sheets-save-btn {
+      padding: 8px 14px; font-size: 12px; font-family: inherit;
+      border: 0.5px solid var(--border-md);
+      border-radius: var(--radius-md);
+      background: var(--text-info); color: #fff;
+      cursor: pointer; white-space: nowrap;
+    }
+    .sheets-status {
+      font-size: 11px; color: var(--text-tertiary);
+      margin-top: 6px; display: flex; align-items: center; gap: 6px;
+    }
+    .sheets-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--text-tertiary); flex-shrink: 0;
+    }
+    .sheets-dot.connected { background: var(--text-success); }
+    .sheets-dot.syncing { background: var(--text-warning); animation: pulse 1s infinite; }
+    .sheets-dot.error { background: var(--text-danger); }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    .app-label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-tertiary); margin-bottom: 0.5rem; }
+    .app-title { font-size: 22px; font-weight: 500; color: var(--text-primary); margin-bottom: 0.25rem; }
+    .app-sub { font-size: 13px; color: var(--text-secondary); margin-bottom: 1.75rem; line-height: 1.5; }
+
+    .step { display: none; }
+    .step.active { display: block; }
+
+    label { display: block; font-size: 13px; color: var(--text-secondary); margin-bottom: 5px; }
+    input[type="text"], input[type="number"] {
+      width: 100%; padding: 10px 12px; font-size: 15px;
+      border: 0.5px solid var(--border-md); border-radius: var(--radius-md);
+      background: var(--bg); color: var(--text-primary);
+      margin-bottom: 1rem; outline: none; font-family: inherit;
+    }
+    input:focus { border-color: var(--text-info); box-shadow: 0 0 0 3px var(--border-info); }
+    .hint { font-size: 12px; color: var(--text-tertiary); margin-top: -0.75rem; margin-bottom: 1.25rem; }
+
+    .btn {
+      display: inline-block; padding: 10px 20px; font-size: 14px;
+      font-family: inherit; border: 0.5px solid var(--border-md);
+      border-radius: var(--radius-md); background: var(--bg);
+      color: var(--text-primary); cursor: pointer;
+    }
+    .btn:hover { background: var(--bg-secondary); }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary { background: var(--text-primary); color: var(--bg); border-color: var(--text-primary); }
+    .btn-primary:hover { opacity: 0.85; background: var(--text-primary); }
+
+    .progress { display: flex; gap: 6px; margin-bottom: 1.5rem; }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border-md); }
+    .dot.done { background: var(--text-info); }
+    .dot.active { background: var(--text-primary); }
+
+    .q-text { font-size: 16px; font-weight: 500; color: var(--text-primary); margin-bottom: 0.4rem; line-height: 1.5; }
+    .q-sub { font-size: 13px; color: var(--text-secondary); margin-bottom: 1.25rem; line-height: 1.5; }
+    .choices { display: flex; flex-direction: column; gap: 8px; margin-bottom: 0.5rem; }
+    .choice {
+      padding: 11px 14px; font-size: 14px; font-family: inherit;
+      border: 0.5px solid var(--border); border-radius: var(--radius-md);
+      background: var(--bg-secondary); color: var(--text-primary);
+      cursor: pointer; text-align: left; transition: border-color 0.12s, background 0.12s;
+    }
+    .choice:hover { border-color: var(--border-md); }
+    .choice.selected { border-color: var(--border-info); background: var(--bg-info); color: var(--text-info); }
+
+    .verdict-card { border-radius: var(--radius-lg); border: 0.5px solid var(--border); padding: 1.5rem; margin-bottom: 1.25rem; }
+    .verdict-yes  { background: var(--bg-success); border-color: var(--border-success); }
+    .verdict-no   { background: var(--bg-danger);  border-color: var(--border-danger); }
+    .verdict-wait { background: var(--bg-warning); border-color: var(--border-warning); }
+    .verdict-headline { font-size: 30px; font-weight: 500; margin-bottom: 8px; }
+    .verdict-yes  .verdict-headline { color: var(--text-success); }
+    .verdict-no   .verdict-headline { color: var(--text-danger); }
+    .verdict-wait .verdict-headline { color: var(--text-warning); }
+    .verdict-item { font-size: 13px; color: var(--text-secondary); margin-bottom: 1.25rem; }
+    .verdict-reason { font-size: 14px; color: var(--text-secondary); line-height: 1.65; }
+
+    .sync-note { font-size: 11px; color: var(--text-tertiary); margin-top: 8px; display: flex; align-items: center; gap: 5px; }
+
+    .reset-btn { background: none; border: none; font-size: 13px; color: var(--text-info); cursor: pointer; padding: 0; font-family: inherit; }
+    .reset-btn:hover { text-decoration: underline; }
+
+    /* ── SAVINGS DASHBOARD ── */
+    .savings-dashboard { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem; margin-bottom: 1.75rem; }
+    .savings-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+    .savings-title { font-size: 12px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-tertiary); }
+    .savings-since { font-size: 11px; color: var(--text-tertiary); }
+    .savings-hero { margin-bottom: 1rem; }
+    .savings-hero-label { font-size: 12px; color: var(--text-secondary); margin-bottom: 2px; }
+    .savings-hero-amount { font-size: 32px; font-weight: 500; color: var(--text-success); line-height: 1.1; }
+    .savings-hero-sub { font-size: 12px; color: var(--text-tertiary); margin-top: 2px; }
+    .savings-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-bottom: 1rem; }
+    .savings-stat { background: var(--bg-secondary); border-radius: var(--radius-md); padding: 10px 12px; }
+    .savings-stat-label { font-size: 11px; color: var(--text-tertiary); margin-bottom: 3px; }
+    .savings-stat-value { font-size: 15px; font-weight: 500; color: var(--text-primary); }
+    .savings-stat-value.green { color: var(--text-success); }
+    .savings-stat-value.amber { color: var(--text-warning); }
+    .savings-bar-wrap { margin-bottom: 0.25rem; }
+    .savings-bar-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-tertiary); margin-bottom: 4px; }
+    .savings-bar-track { height: 5px; background: var(--bg-secondary); border-radius: 99px; overflow: hidden; }
+    .savings-bar-fill { height: 100%; border-radius: 99px; background: var(--text-success); transition: width 0.4s ease; }
+    .savings-empty { font-size: 12px; color: var(--text-tertiary); font-style: italic; text-align: center; padding: 0.5rem 0; }
+    .savings-loading { font-size: 12px; color: var(--text-tertiary); text-align: center; padding: 0.5rem 0; }
+
+    /* ── HISTORY ── */
+    .history-section { margin-top: 2rem; border-top: 0.5px solid var(--border); padding-top: 1.5rem; }
+    .history-title { font-size: 13px; color: var(--text-secondary); margin-bottom: 0.75rem; }
+    .history-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 0.5px solid var(--border); font-size: 13px; }
+    .history-item:last-child { border-bottom: none; }
+    .history-name { color: var(--text-primary); flex: 1; }
+    .history-amt  { color: var(--text-secondary); margin: 0 12px; }
+    .history-date { color: var(--text-tertiary); font-size: 11px; margin-right: 8px; }
+    .badge { font-size: 11px; padding: 2px 8px; border-radius: 99px; font-weight: 500; }
+    .badge-yes  { background: var(--bg-success); color: var(--text-success); }
+    .badge-no   { background: var(--bg-danger);  color: var(--text-danger); }
+    .badge-wait { background: var(--bg-warning); color: var(--text-warning); }
+    .clear-btn { font-size: 12px; color: var(--text-tertiary); background: none; border: none; cursor: pointer; float: right; font-family: inherit; }
+    .clear-btn:hover { color: var(--text-danger); }
+    .empty-history { font-size: 13px; color: var(--text-tertiary); font-style: italic; }
+  </style>
+</head>
+<body>
+<div class="card">
+  <a href="../index.html" class="back-link">← Portfolio</a>
+
+  <!-- SHEETS CONFIG -->
+  <div class="sheets-banner" id="sheets-banner">
+    <strong>Connect Google Sheets for cross-device sync</strong><br>
+    Paste your Apps Script Web App URL below to save all decisions to your Google Sheet.
+    <div class="sheets-input-wrap">
+      <input type="text" class="sheets-input" id="sheets-url-input" placeholder="https://script.google.com/macros/s/…/exec"/>
+      <button class="sheets-save-btn" onclick="saveSheetURL()">Save</button>
+    </div>
+    <div class="sheets-status">
+      <div class="sheets-dot" id="sheets-dot"></div>
+      <span id="sheets-status-text">Not connected — data saves locally only</span>
+    </div>
+  </div>
+
+  <p class="app-label">Financial discipline tool</p>
+  <h1 class="app-title">Should I buy this?</h1>
+  <p class="app-sub">Enter what you're considering. Get a clear Yes, No, or Wait — no overthinking.</p>
+
+  <div class="savings-dashboard" id="savings-dashboard">
+    <div class="savings-loading">Loading savings data…</div>
+  </div>
+
+  <div class="step active" id="step-0">
+    <label for="item-name">What is it?</label>
+    <input type="text" id="item-name" placeholder="e.g. wireless earbuds, new shoes…" />
+    <label for="item-amount">How much does it cost? (₹)</label>
+    <input type="number" id="item-amount" placeholder="Amount in ₹" min="0" />
+    <p class="hint">Under ₹50 → auto-approved. No questions asked.</p>
+    <button class="btn btn-primary" onclick="startFlow()">Check this purchase →</button>
+  </div>
+
+  <div class="step" id="step-q">
+    <div class="progress" id="progress-dots"></div>
+    <p class="q-text" id="q-text"></p>
+    <p class="q-sub" id="q-sub"></p>
+    <div class="choices" id="q-choices"></div>
+  </div>
+
+  <div class="step" id="step-verdict">
+    <p class="verdict-item" id="verdict-item-label"></p>
+    <div class="verdict-card" id="verdict-card">
+      <div class="verdict-headline" id="verdict-headline"></div>
+      <div class="verdict-reason" id="verdict-reason"></div>
+    </div>
+    <div class="sync-note" id="sync-note"></div>
+    <button class="reset-btn" onclick="reset()">← Check another purchase</button>
+  </div>
+
+  <div class="history-section">
+    <p class="history-title">
+      Recent decisions
+      <button class="clear-btn" onclick="clearHistory()">Clear all</button>
+    </p>
+    <div id="history-list"><p class="empty-history">Loading…</p></div>
+  </div>
+</div>
+
+<script>
+// ── CONFIG ────────────────────────────────────────────────────
+const SHEETS_URL_KEY = "pf_sheets_url";
+const LOCAL_CACHE_KEY = "pf_local_cache";
+
+// ── STATE ─────────────────────────────────────────────────────
+let answers = {}, currentQ = 0, itemName = "", itemAmount = 0;
+let history = [];
+let sheetsURL = localStorage.getItem(SHEETS_URL_KEY) || "";
+
+// ── QUESTIONS ─────────────────────────────────────────────────
+const questions = [
+  {
+    id:"budgeted", text:"Is this in your budget for this month?",
+    sub:"Your saveable budget is ~₹48K/month after rent, EMIs, and essentials.",
+    options:[
+      {label:"Yes, I planned for this",value:"yes"},
+      {label:"No, it's unplanned",value:"no"},
+      {label:"Sort of — I can adjust",value:"maybe"}
+    ]
+  },
+  {
+    id:"want_duration", text:"How long have you wanted this?",
+    sub:"Impulse buys peak within 24 hours of seeing something.",
+    options:[
+      {label:"Just saw it today",value:"today"},
+      {label:"A few days",value:"days"},
+      {label:"More than a week",value:"week"}
+    ]
+  },
+  {
+    id:"necessity", text:"What best describes this purchase?", sub:"",
+    options:[
+      {label:"Genuine need — I use this regularly",value:"need"},
+      {label:"Nice to have, but I'll survive without it",value:"want"},
+      {label:"Purely a treat / impulse",value:"impulse"}
+    ]
+  },
+  {
+    id:"goal_impact", text:"Does buying this delay any of your financial goals?",
+    sub:"Think: Brigade flat milestones, SIP targets, emergency fund, loan prepayment.",
+    options:[
+      {label:"No impact at all",value:"none"},
+      {label:"Minor — I'll adjust elsewhere",value:"minor"},
+      {label:"Yes, it'll hurt a target",value:"yes"}
+    ]
+  },
+  {
+    id:"alternative", text:"Can you get the same result for less — or for free?", sub:"",
+    options:[
+      {label:"No, this is the best option",value:"no"},
+      {label:"Maybe, but I haven't checked",value:"maybe"},
+      {label:"Yes, there's a cheaper way",value:"yes"}
+    ]
+  }
+];
+
+// ── INIT ──────────────────────────────────────────────────────
+window.addEventListener("DOMContentLoaded", () => {
+  initSheetsUI();
+  loadHistory();
+});
+
+// ── SHEETS UI ─────────────────────────────────────────────────
+function initSheetsUI() {
+  const input = document.getElementById("sheets-url-input");
+  if (sheetsURL) {
+    input.value = sheetsURL;
+    setStatus("syncing", "Checking connection…");
+    testConnection();
+  }
+}
+
+function saveSheetURL() {
+  const val = document.getElementById("sheets-url-input").value.trim();
+  if (!val || !val.startsWith("https://script.google.com")) {
+    setStatus("error", "Invalid URL — must start with https://script.google.com");
+    return;
+  }
+  sheetsURL = val;
+  localStorage.setItem(SHEETS_URL_KEY, sheetsURL);
+  setStatus("syncing", "Testing connection…");
+  testConnection();
+}
+
+async function testConnection() {
+  try {
+    const res = await fetch(`${sheetsURL}?action=ping`);
+    const json = await res.json();
+    if (json.success && json.pong) {
+      setStatus("connected", "Connected to Google Sheets — all data syncs across devices");
+      loadHistory();
+    } else {
+      setStatus("error", "Connected but got unexpected response — check script permissions");
+    }
+  } catch(e) {
+    setStatus("error", "Could not reach script — check URL and deployment settings");
+  }
+}
+
+function setStatus(state, text) {
+  const dot = document.getElementById("sheets-dot");
+  const label = document.getElementById("sheets-status-text");
+  dot.className = "sheets-dot" + (state === "connected" ? " connected" : state === "syncing" ? " syncing" : state === "error" ? " error" : "");
+  label.textContent = text;
+}
+
+// ── SHEETS API ────────────────────────────────────────────────
+async function sheetsGet(action) {
+  if (!sheetsURL) return null;
+  const url = `${sheetsURL}?app=purchase-filter&action=${action}`;
+  const res = await fetch(url);
+  const json = await res.json();
+  return json.success ? json.data : null;
+}
+
+async function sheetsAdd(entry) {
+  if (!sheetsURL) return false;
+  const url = sheetsURL + "?app=purchase-filter&action=add" +
+    `&name=${encodeURIComponent(entry.name)}` +
+    `&amount=${entry.amount}` +
+    `&verdict=${encodeURIComponent(entry.verdict)}` +
+    `&reason=${encodeURIComponent(entry.reason)}` +
+    `&date=${encodeURIComponent(entry.date)}`;
+  try {
+    const res = await fetch(url);
+    const json = await res.json();
+    return json.success === true;
+  } catch(e) { return false; }
+}
+
+async function sheetsClear() {
+  if (!sheetsURL) return false;
+  try {
+    const res = await fetch(`${sheetsURL}?app=purchase-filter&action=clear`);
+    const json = await res.json();
+    return json.success === true;
+  } catch(e) { return false; }
+}
+
+// ── HISTORY ───────────────────────────────────────────────────
+async function loadHistory() {
+  if (sheetsURL) {
+    setStatus("syncing", "Syncing from Google Sheets…");
+    try {
+      const data = await sheetsGet("get");
+      if (data !== null) {
+        history = data;
+        localStorage.setItem(LOCAL_CACHE_KEY, JSON.stringify(history));
+        setStatus("connected", "Synced with Google Sheets ✓");
+      } else {
+        fallbackToLocal();
+      }
+    } catch(e) {
+      fallbackToLocal();
+      setStatus("error", "Offline — showing locally cached data");
+    }
+  } else {
+    fallbackToLocal();
+  }
+  renderSavings();
+  renderHistory();
+}
+
+function fallbackToLocal() {
+  history = JSON.parse(localStorage.getItem(LOCAL_CACHE_KEY) || "[]");
+}
+
+// ── FLOW ──────────────────────────────────────────────────────
+function startFlow() {
+  itemName   = document.getElementById("item-name").value.trim();
+  itemAmount = parseFloat(document.getElementById("item-amount").value) || 0;
+  if (!itemName || !itemAmount) { alert("Please enter both item name and amount."); return; }
+
+  if (itemAmount < 50) {
+    saveAndShow("Yes", "Auto-approved — anything under ₹50 doesn't need a second thought. Go for it.", "yes");
+    return;
+  }
+
+  answers = {}; currentQ = 0;
+  document.getElementById("step-0").classList.remove("active");
+  document.getElementById("step-q").classList.add("active");
+  showQuestion(0);
+}
+
+function showQuestion(idx) {
+  const q = questions[idx];
+  document.getElementById("q-text").textContent = q.text;
+  document.getElementById("q-sub").textContent  = q.sub;
+
+  const choicesEl = document.getElementById("q-choices");
+  choicesEl.innerHTML = "";
+  q.options.forEach(opt => {
+    const btn = document.createElement("button");
+    btn.className = "choice";
+    btn.textContent = opt.label;
+    btn.onclick = () => selectAnswer(q.id, opt.value, btn);
+    choicesEl.appendChild(btn);
+  });
+
+  const dots = document.getElementById("progress-dots");
+  dots.innerHTML = "";
+  questions.forEach((_, i) => {
+    const d = document.createElement("div");
+    d.className = "dot" + (i < idx ? " done" : i === idx ? " active" : "");
+    dots.appendChild(d);
+  });
+}
+
+function selectAnswer(qId, value, btnEl) {
+  document.querySelectorAll(".choice").forEach(b => b.classList.remove("selected"));
+  btnEl.classList.add("selected");
+  answers[qId] = value;
+  setTimeout(() => {
+    currentQ++;
+    if (currentQ < questions.length) showQuestion(currentQ);
+    else computeVerdict();
+  }, 280);
+}
+
+function computeVerdict() {
+  const a = answers;
+  let score = 0, reasons = [];
+
+  if (a.budgeted === "yes") score += 2;
+  else if (a.budgeted === "maybe") score += 1;
+  else { score -= 2; reasons.push("it's not in your budget this month"); }
+
+  if (a.want_duration === "week") score += 2;
+  else if (a.want_duration === "days") score += 1;
+  else { score -= 1; reasons.push("you just discovered this today — classic impulse trigger"); }
+
+  if (a.necessity === "need") score += 2;
+  else if (a.necessity === "impulse") { score -= 2; reasons.push("this is a pure impulse buy"); }
+
+  if (a.goal_impact === "none") score += 2;
+  else if (a.goal_impact === "yes") { score -= 3; reasons.push("it'll hurt one of your financial goals"); }
+
+  if (a.alternative === "no") score += 1;
+  else if (a.alternative === "maybe") { score -= 1; reasons.push("you haven't checked if there's a cheaper option"); }
+  else { score -= 2; reasons.push("there's a cheaper alternative you haven't explored"); }
+
+  if (itemAmount > 5000) { score -= 1; reasons.push("this is above ₹5,000 — high scrutiny zone"); }
+  else if (itemAmount < 500) score += 1;
+
+  let verdict, type, reason;
+  if (score >= 5) {
+    verdict = "Yes"; type = "yes";
+    reason = `Looks like a considered, budget-friendly decision. Go ahead with the ${itemName}.`;
+  } else if (score >= 2) {
+    verdict = "Wait"; type = "wait";
+    const r = reasons[0] || "a couple of flags came up";
+    reason = `Pause for 48 hours. The main concern: ${r}. If you still want it after that, it's probably fine.`;
+  } else {
+    verdict = "No"; type = "no";
+    const r = reasons.slice(0,2).join(" and ") || "multiple flags came up";
+    reason = `Skip it — ${r}. Your future self (and Brigade flat) will thank you.`;
+  }
+
+  saveAndShow(verdict, reason, type);
+}
+
+async function saveAndShow(verdict, reason, type) {
+  const entry = {
+    name:    itemName,
+    amount:  itemAmount,
+    verdict: verdict.toLowerCase(),
+    reason:  reason,
+    date:    new Date().toLocaleDateString("en-IN", {day:"numeric",month:"short",year:"numeric"})
+  };
+
+  // Optimistically add to local
+  history.unshift(entry);
+  if (history.length > 50) history = history.slice(0, 50);
+  localStorage.setItem(LOCAL_CACHE_KEY, JSON.stringify(history));
+
+  // Show verdict immediately
+  document.getElementById("step-q").classList.remove("active");
+  document.getElementById("step-0").classList.remove("active");
+  document.getElementById("step-verdict").classList.add("active");
+  document.getElementById("verdict-item-label").textContent = itemName + " · ₹" + itemAmount.toLocaleString("en-IN");
+  document.getElementById("verdict-headline").textContent   = verdict;
+  document.getElementById("verdict-reason").textContent     = reason;
+  document.getElementById("verdict-card").className         = "verdict-card verdict-" + type;
+
+  const syncNote = document.getElementById("sync-note");
+  syncNote.innerHTML = "";
+
+  renderSavings();
+  renderHistory();
+
+  // Sync to Sheets in background
+  if (sheetsURL) {
+    syncNote.innerHTML = `<span style="color:var(--text-tertiary);font-size:11px;">⟳ Saving to Google Sheets…</span>`;
+    const ok = await sheetsAdd(entry);
+    syncNote.innerHTML = ok
+      ? `<span style="color:var(--text-success);font-size:11px;">✓ Saved to Google Sheets</span>`
+      : `<span style="color:var(--text-warning);font-size:11px;">⚠ Saved locally — will sync when online</span>`;
+  } else {
+    syncNote.innerHTML = `<span style="color:var(--text-tertiary);font-size:11px;">Saved locally · Connect Google Sheets for cross-device sync</span>`;
+  }
+}
+
+function reset() {
+  document.getElementById("step-verdict").classList.remove("active");
+  document.getElementById("step-q").classList.remove("active");
+  document.getElementById("step-0").classList.add("active");
+  document.getElementById("item-name").value = "";
+  document.getElementById("item-amount").value = "";
+  answers = {}; currentQ = 0;
+}
+
+// ── SAVINGS ───────────────────────────────────────────────────
+function renderSavings() {
+  const el = document.getElementById("savings-dashboard");
+  const blocked = history.filter(h => h.verdict === "no" || h.verdict === "wait");
+
+  if (!blocked.length) {
+    el.innerHTML = `<div class="savings-empty">No savings tracked yet — your first "No" or "Wait" will appear here.</div>`;
+    return;
+  }
+
+  const totalSaved  = blocked.reduce((s,h) => s + Number(h.amount), 0);
+  const noSaved     = history.filter(h => h.verdict==="no").reduce((s,h)=>s+Number(h.amount),0);
+  const waitSaved   = history.filter(h => h.verdict==="wait").reduce((s,h)=>s+Number(h.amount),0);
+  const noCount     = history.filter(h => h.verdict==="no").length;
+  const waitCount   = history.filter(h => h.verdict==="wait").length;
+
+  const now = new Date();
+  const curMonth = now.toLocaleDateString("en-IN",{month:"short"});
+  const curYear  = now.getFullYear().toString();
+  const thisMonthSaved = blocked
+    .filter(h => h.date && h.date.includes(curMonth) && h.date.includes(curYear))
+    .reduce((s,h) => s+Number(h.amount), 0);
+
+  const monthLabel  = now.toLocaleDateString("en-IN",{month:"short",year:"numeric"});
+  const firstEntry  = history[history.length - 1];
+  const sinceLine   = firstEntry ? "since " + firstEntry.date : "";
+  const pct         = Math.min(100, Math.round((thisMonthSaved / 48000) * 100));
+
+  el.innerHTML = `
+    <div class="savings-header">
+      <span class="savings-title">Savings tracker</span>
+      <span class="savings-since">${sinceLine}</span>
+    </div>
+    <div class="savings-hero">
+      <div class="savings-hero-label">Total money not spent</div>
+      <div class="savings-hero-amount">₹${totalSaved.toLocaleString("en-IN")}</div>
+      <div class="savings-hero-sub">${noCount + waitCount} purchases blocked &middot; ${noCount} No &middot; ${waitCount} Wait</div>
+    </div>
+    <div class="savings-grid">
+      <div class="savings-stat"><div class="savings-stat-label">Hard No</div><div class="savings-stat-value green">₹${noSaved.toLocaleString("en-IN")}</div></div>
+      <div class="savings-stat"><div class="savings-stat-label">On hold</div><div class="savings-stat-value amber">₹${waitSaved.toLocaleString("en-IN")}</div></div>
+      <div class="savings-stat"><div class="savings-stat-label">${monthLabel}</div><div class="savings-stat-value">₹${thisMonthSaved.toLocaleString("en-IN")}</div></div>
+    </div>
+    <div class="savings-bar-wrap">
+      <div class="savings-bar-labels"><span>This month vs ₹48K saveable budget</span><span>${pct}%</span></div>
+      <div class="savings-bar-track"><div class="savings-bar-fill" style="width:${pct}%"></div></div>
+    </div>`;
+}
+
+// ── HISTORY RENDER ────────────────────────────────────────────
+function renderHistory() {
+  const el = document.getElementById("history-list");
+  if (!history.length) {
+    el.innerHTML = '<p class="empty-history">Nothing yet.</p>';
+    return;
+  }
+  el.innerHTML = history.slice(0, 10).map(h => `
+    <div class="history-item">
+      <span class="history-name">${h.name}</span>
+      <span class="history-date">${h.date || ""}</span>
+      <span class="history-amt">₹${Number(h.amount).toLocaleString("en-IN")}</span>
+      <span class="badge badge-${h.verdict}">${h.verdict.charAt(0).toUpperCase()+h.verdict.slice(1)}</span>
+    </div>`).join("");
+}
+
+async function clearHistory() {
+  if (!confirm("Clear all decision history?")) return;
+  history = [];
+  localStorage.removeItem(LOCAL_CACHE_KEY);
+  if (sheetsURL) await sheetsClear();
+  renderSavings();
+  renderHistory();
+}
+</script>
+</body>
+</html>
