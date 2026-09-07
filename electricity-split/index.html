@@ -1,0 +1,685 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Electricity Split</title>
+<link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjogIkVsZWN0cmljaXR5IFNwbGl0IiwgInNob3J0X25hbWUiOiAiRWxlYyBTcGxpdCIsICJkZXNjcmlwdGlvbiI6ICJTcGxpdCB0aGUgc2hhcmVkIGVsZWN0cmljaXR5IGJpbGwgYmV0d2VlbiB0d28gZmFtaWxpZXMgYnkgc3VibWV0ZXIgcmVhZGluZy4iLCAic3RhcnRfdXJsIjogIi4vIiwgInNjb3BlIjogIi4vIiwgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsICJiYWNrZ3JvdW5kX2NvbG9yIjogIiNFREVBRTEiLCAidGhlbWVfY29sb3IiOiAiIzIzMkYzQSIsICJvcmllbnRhdGlvbiI6ICJwb3J0cmFpdCIsICJpY29ucyI6IFt7InNyYyI6ICJkYXRhOmltYWdlL3BuZztiYXNlNjQsaVZCT1J3MEtHZ29BQUFBTlNVaEVVZ0FBQU1BQUFBREFDQVlBQUFCUzNHd0hBQUFFU0VsRVFWUjRuTzNjTzNJVlNSQ0cwWUxBdzlFZXNNYkNCM2JGT3RnVnJJRnRqRE0yWXloNHc5WHQ3cXJ1clByUHNXUW9GRzNrbDUxNmhKNjlldjNtUzROUXo2OStBTGlTQUlnbUFLSUpnR2dDSUpvQWlDWUFvZ21BYUFJZ21nQ0lKZ0NpQ1lCb0FpQ2FBSWdtQUtJSmdHZ0NJSm9BaUNZQW9nbUFhQUlnMm91ckh5RFp5M2YvZlB2NHY0K2ZkMzJORDIvL2ZmSnozbjk2MlBXMUUzZ0RUT3llNGVjMkFTek85cjlOQUpPeS9mc1FBTkVFTUNIYnZ4OEJUR2JMOEx2L255WUFvZ2xnSWs2Zi9nUXdpYTNENy95NWp3Q0lKb0FKT0gzR0VjQ0NuRC8zRTBCeHR2OVlBaWpNOEk4bkFLSUpvS2k5MjkvOXY0MEFDbkw2bkVjQVJCTkFNVWUydi9Obk93RVFUUUNGdVAzUEo0QWlqZzYvODJjZkFSQk5BRVFUQU5FRXNBRDMvMzRDSUpvQWlDYUFpL1Q2bWIvejV4Z0JYTUF2dk9vUUFORUVjTEtlMjkvNWM1d0FUdVQwcVVjQVJCUEFTV3ovbWdRd0tmZC9Id0k0Z2UxZmx3QUdNL3kxQ1dCQ3pwOStCRENRN1YrZkFBWXgvSE1RQU5FRU1NREk3ZS8rNzBzQVJCTkFaMjcvdVFpZ285SEQ3L3pwVHdCRUUwQW5UcDg1Q1dBU3pwOHhCTkNCN1Q4dkFSeGsrT2NtQUtJSjRJQ3p0ci83Znh3QjdPVDBXWU1BaUNhQUhjN2MvczZmc1FSQU5BRnM1UFpmaXdBMk9IdjRuVC9qQ1lCb0FyaVQwMmROQXJpRDRWK1hBSXB5LzUvanhkVVBVTjFWMjcvaVcyZkZLTDBCdU11S3c5K2FBRzZxdUlXdnNPcnd0eWFBdnpMOEdRVEFUU3R2LzlZRThFZTIvNlBWaDc4MUFmekc4RDlLR1A3V0JFQTRBZnpBOW4rVXN2MWJFd0MvU0JyKzFnVHdqZTJmTi95dENhQzFadmlUQ1lEV1d1YjJiMDBBdG4vTEhmN1d3Z013L05uRDMxcDRBQkFiZ08xdis3Y1dIRUE2dy84b01vRDA3Vy80djRzTElIMzQrVmxjQU9scy81OUZCWkMrL1EzLzcySUNNUHdQVno5Q1NURUJ3SjlFQkdEN1AxejlDR1ZGQkpETThOKzJmQURKMjkvd1AyMzVmNDFZWlFpU1E2eHMrVGRBQlZjTWY1WHdxeFBBZ2d6Ly9RU3dHTU8valFBV1l2aTNFOEJndnZtdFRRQ0xzUDMzRWNBQ0RQOStBcGljNFQ5R0FBTzUvK3NUd01Scy8rTUVNQ25EMzRjQUptVDQreEhBSU83L09RaGdNclovWHdLWWlPSHZUd0NUTVB4akNHQUE5Lzg4QkRBQjIzOGNBUlJuK01jU1FHYzl6eC9EUDU0QWlDYUFvbXovY3dpZ0lNTi9IZ0YwMU9QK04vem5FZ0RSQkZDSTdYOCtBUlJoK0s4aGdFNzgrY09jQkVBMEFSQk5BRVFUUUFkNzduL2Y5TllnZ0FzWS9qb0VRRFFCbk16MnIwVUFCMjI1L3cxL1BRSTRpZUd2U1FCRUU4QUI5NTQvdG45ZEFoak04TmNtZ0lFTWYzMENJSm9BZG5ycS9yZjk1eUNBQVF6L1BBVFFtZUdmaXdDSUpvQWQvbmIvMi83ekVVQW5objlPQXVqQThNOUxBRVFUd0VhLzN2KzIvOXdFY0lEaG41OEFkakw4YXhBQTBRU3d3ZGY3My9aZmh3QTJNdnhyZWZicTlac3ZWejhFWE1VYmdHZ0NJSm9BaUNZQW9nbUFhQUlnbWdDSUpnQ2lDWUJvQWlDYUFJZ21BS0lKZ0dnQ0lKb0FpQ1lBb2dtQWFBSWdtZ0NJSmdDaUNZQm8vd01UZE9xekpnWCtld0FBQUFCSlJVNUVya0pnZ2c9PSIsICJzaXplcyI6ICIxOTJ4MTkyIiwgInR5cGUiOiAiaW1hZ2UvcG5nIiwgInB1cnBvc2UiOiAiYW55IG1hc2thYmxlIn0sIHsic3JjIjogImRhdGE6aW1hZ2UvcG5nO2Jhc2U2NCxpVkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBZ0FBQUFJQUNBWUFBQUQwZU5UNkFBQU5qMGxFUVZSNG5PM2RQYlpjMVJXRlVmQlE1b1ErRURraUIvZUtkdEFyMHdaM2c4UXhEc0JERm5ydlZkVzk1MmZ2cythTU5UUXEwdnIyUFlHKy9mNkhIMy8vQmdDSThyZmRQd0FBV0U4QUFFQWdBUUFBZ1FRQUFBUVNBQUFRU0FBQVFDQUJBQUNCQkFBQUJCSUFBQkJJQUFCQUlBRUFBSUVFQUFBRUVnQUFFRWdBQUVBZ0FRQUFnUVFBQUFRU0FBQVFTQUFBUUNBQkFBQ0JCQUFBQkJJQUFCQklBQUJBSUFFQUFJRUVBQUFFRWdBQUVFZ0FBRUFnQVFBQWdRUUFBQVFTQUFBUVNBQUFRQ0FCQUFDQkJBQUFCQklBQUJCSUFBQkFJQUVBQUlFRUFBQUVFZ0FBRUVnQUFFQWdBUUFBZ1FRQUFBUVNBQUFRU0FBQVFDQUJBQUNCQkFBQUJCSUFBQkJJQUFCQUlBRUFBSUVFQUFBRUVnQUFFRWdBQUVBZ0FRQUFnUVFBQUFRU0FBQVFTQUFBUUNBQkFBQ0JCQUFBQkJJQUFCQklBQUJBSUFFQUFJRSs3ZjRCd0JwLy8rYy9udjZ6Ly9uWHZ5ZitrdXQrK2VtMzRYL256NzkrTi96dmhBNThBUUJhbURIK2tFd0FBTEZjL3lRVEFFQjVybjhZVHdBQVFDQUJBSlRtK29jNUJBQlExc3p4OS81UE9nRUFBSUVFQUZDU1QvOHdsd0FBeXBrOS9qNy9nd0FBZ0VnQ0FDakZwMzlZUXdBQVVYeitoejhJQUtBTTF6K3NJd0NBRW93L3JDVUFBQ0NRQUFDMlczWDllLytIendRQXNKVlAvN0NIQUFDQVFBSUEyR2JsOWUvelAzeEpBQUJBSUFFQWJPSHRIL1lTQU1CeXhoLzJFd0RBOGJ6L3c5Y0VBTENVNng5cUVBREFNc1lmNmhBQXdORjgvb2UzQ1FCZ0NkYy8xQ0lBQUNDUUFBQ20yM1g5Ky93UDd4TUF3RlErL1VOTkFnQUFBZ2tBWUJyWFA5UWxBSUFwZG8rLzkzLzRtQUFBZ0VBQ0FCaHU5L1VQUENZQWdPUDQvQStQQ1FCZ0tOYy85Q0FBZ0dHTVAvUWhBQUFna0FBQWhxaHkvWHYvaCtjSUFPQzJLdU1QUEU4QUFFQWdBUURjVXVuNjkva2ZuaWNBQUNDUUFBQXVxM1Q5QTY4UkFNQWwxY2JmNTM5NGpRQUFnRUFDQUhoWnRlc2ZlSjBBQUY1aS9PRU1BZ0Jvei9zL3ZFNEFBRTl6L2NNNUJBQUFCQklBd0ZPcVh2OCsvOE0xQWdCNHFPcjRBOWNKQUFBSUpBQ0FEN24rNFV3Q0FIaFg5ZkgzL2cvWENRQUFDQ1FBZ0RkVnYvNkJld1FBMEpMUC8zQ1BBQUMrNHZxSDh3a0FBQWdrQUlCMmZQNkgrd1FBQUFRU0FBQVFTQUFBUUNBQkFMVGkvUi9HRUFBQUVFZ0FBRUFnQVFDMDRmTS9qQ01BQUNDUUFBQ0FRQUlBQUFJSkFLQUY3Lzh3bGdBQWdFQUNBQUFDQ1FDZ1BKLy9ZVHdCQUFDQkJBQUFCQklBRU9DWG4zN2IvUk11OC9rZjVoQUFjTGpPNHcvTUl3QUFJSkFBZ0lPNS9vSDNDQUNnTE8vL01JOEFnRU81L29HUENBQTRrUEVISGhFQVFFaysvOE5jQWdBTzQvb0huaUVBNENER0gzaVdBQUNBUUFJQURuSFM5ZS85SCtZVEFBQVFTQURBQVU2Ni9vRTFCQUEwZDlyNCsvd1Bhd2dBQUFna0FLQ3gwNjUvWUIwQkFFMmRPUDQrLzhNNkFnQUFBZ2tBYU9qRTZ4OVlTd0FBUUNBQkFNMmNldjE3LzRlMUJBQTBjdXI0QStzSkFBQUlKQUNnaVpPdmY1Ly9ZVDBCQUEyY1BQN0FIZ0lBQUFJSkFDak85US9NSUFDQXJiei93eDRDQUFwei9RT3pDQUFveXZnRE13a0FZQnVmLzJFZkFRQUZ1ZjZCMlFRQUZHUDhnUlVFQUxDRnovK3dsd0NBUWx6L3dDb0NBQUFDQ1FBb3d2VVByQ1FBb0lDMDhmZitEL3NKQUFBSUpBQmdzN1RySDZoQkFNQkdpZVB2OHovVUlBQUFJSkFBZ0UwU3IzK2dEZ0VBQUlFRUFHeVFldjE3LzRjNkJBQXNsanIrUUMwQ0FBQUNDUUJZS1BuNjkva2ZhaEVBc0VqeStBUDFDQUFBQ0NRQVlJSDA2OS9uZjZoSEFBQkFJQUVBazZWZi8wQk5BZ0FtTXY1QVZRSUFtTXI3UDlRa0FHQVMxejlRbVFDQUNZdy9VSjBBQUtieCtSL3FFZ0F3bU9zZjZFQUFBRUFnQVFBRHVmNkJMZ1FBREdMOHYrVDlIMm9UQUFBUVNBREFBSzUvb0JzQkFEY1ovNi81L0EvMUNRQUFDQ1FBNEFiWFA5Q1ZBQUNHOHZrZmVoQUFjSkhySCtoTUFNQUZ4aC9vVGdBQVFDQUJBQzl5L2IvUCt6LzBJUURnQmNZZk9JVUFBSUJBQWdDZTVQci9tTS8vMElzQUFJQkFBZ0NlNFBvSFRpTUE0QUhqRDV4SUFBQzNlZitIZmdRQWZNRDFENXhLQU1BN2pEOXdNZ0VBM09MelAvUWtBT0FOcm4vZ2RBSUFBQUlKQVBnTDEvL3pmUDZIdmdRQS9CL2pENlFRQUFBUVNBREFuMXovUUJJQkFOOFkveXU4LzBOdm4zYi9BS0FuMFZTTElPTlZ2Z0FRejVEUm5mSG5DZ0VBMEpqeDV5b0JRRFRYUDVCS0FCREwrTk9kNjU4N0JBQkFROGFmdXdRQWtWei9kR2I4R1VFQUVNZjRBd2dBZ0ZaYy80d2lBSWppK3FjejQ4OUlBZ0NnQWVQUGFBS0FHSzUvZ004RUFCR01QNTI1L3BsQkFBQVVadnlaUlFCd1BOYy9YUmwvWmhJQUhNMzRBN3hOQUFBVTVQcG5OZ0hBc1Z6L2RHWDhXVUVBQUJSaS9GbEZBSEFrMXo4ZEdYOVdFZ0FjeC9nRFBDWUFBQXB3L2JPYUFPQW9ybjg2TXY3c0lBQTRodkduSStQUExnSUFBQUlKQUk3ZytxY2oxejg3Q1FDQURZdy91d2tBMm5QOTA0M3hwd0lCUUd2R0grQWFBUUN3a091ZktnUUFiYm4rNmNiNFU0a0FvQ1hqVHpmR24yb0VBTUJreHArS0JBRHR1UDRCN2hNQUFCTzUvcWxLQU5DSzY1OU9qRCtWQ1FEYU1QNTBZdnlwVGdBQVFDQUJRQXV1ZnpweC9kT0JBS0E4NDA4bnhwOHVCQURBSU1hZlRnUUFwYm4rQWVZUUFBQUR1UDdwUmdCUWx1dWZMb3cvSFFrQVNqTCtkR0g4NlVvQUFFQWdBVUE1cm4rNmNQM1RtUUNnRk9OUEY4YWY3Z1FBd0l1TVB5Y1FBSlRoK3FjRDQ4OHBCQUFBQkJJQWxPRDZwd1BYUHljUkFHeG4vT25BK0hNYUFRRHdnUEhuUkFLQXJWei9BSHNJQUxZeC9uVGcrdWRVQWdEZ0hjYWZrd2tBdG5EOVU1M3g1M1FDQUFBQ0NRQ1djLzFUbmV1ZkJBS0FwWXcvMVJsL1VnZ0FnRDhaZjVJSUFKWngvUVBVSVFCWXd2aFRuZXVmTkFJQWlHZjhTU1FBbU03MVQyWEduMVFDQUlobC9Fa21BSmpLOVE5UWt3QmdHdU5QWmE1LzBna0FJSTd4QndIQUpLNS9xakwrOElkUHUzOEFaL0tQN0JwQ0M3aktGd0JveXZpL1RwakNad0lBaUdEODRVc0NBRGllOFlldkNRQUFDQ1FBb0NIdi84OXovY1BiQkFCd0xPTVA3eE1Bd0pHTVAzeE1BQUJBSUFFQXpYai9mOHoxRDQ4SkFPQW94aCtlSXdDQVl4aC9lSjRBQUk1Zy9PRTFBZ0FhOGY0UGpDSUFnUFpjLy9BNkFRQzBadnpoR2dFQXRHWDg0VG9CQUUxNC93ZEdFZ0JBUzY1L3VFY0FBTzBZZjdoUEFFQURQdjkvWnZ4aERBRUFBSUVFQU5DRzZ4L0dFUUJBQzhZZnhoSUFVSnozZitNUE13Z0FvRFRqRDNNSUFBQUlKQUNBc2x6L01JOEFnTUtTMy8rTlA4d2xBSUJ5akQvTUp3QUFJSkFBQUVweC9jTWFBZ0NLU256L04vNndqZ0FBU2pEK3NKWUFBSUJBQWdEWXp2VVA2d2tBS0NqcC9kLzR3eDRDQU5qRytNTStBZ0FBQWdrQUtDYmw4Ny9ySC9ZU0FNQnl4aC8yRXdEQVVzWWZhaEFBd0RMR0grb1FBRkJJeXZzL3NKOEFBSlp3L1VNdEFnQ1l6dmhEUFFJQW1NcjRRMDBDQUlydy9nK3NKQUNBYVZ6L1VKY0FBS1l3L2xDYkFBQ0dNLzVRbndDQUFyei9BNnNKQUdBbzF6LzBJQUNBWVl3LzlDRUFnQ0dNUC9RaUFHQXo3Ly9BRGdJQXVNMzFELzBJQU9BVzR3ODlDUURZcVB2bmYrTVBmUWtBNEJMakQ3MEpBQUFJSkFDQWw3bitvVDhCQUp0MGZmODMvbkFHQVFBOHpmakRPUVFBQUFRU0FNQlRYUDl3RmdFQUczUjcvemYrY0I0QkFIekkrTU9aQkFBQUJCSUF3THRjLzNBdUFRQ0xkWG4vTi81d05nRUFmTVg0dy9rRUFBQUVFZ0FBRUVnQXdFSmQzditCOHdrQUFBZ2tBQUFna0FDQVJYeitCeW9SQUFBUVNBQUFRQ0FCQUFDQkJBQXM0UDBmcUVZQUFFQWdBUUFBZ1FRQUFBUVNBRENaOTMrZ0lnRUFBSUVFQUFUNCtkZnZkdjhFb0JnQkFJY3ovc0JiQkFCTXRQdjkzL2dEN3hFQUFCQklBTUNoWFAvQVJ3UUFITWo0QTQ4SUFKaGsxL3UvOFFlZUlRQUFJSkFBZ0lPNC9vRm5DUUNZWU1mbmYrTVB2RUlBd0FHTVAvQXFBUUFBZ1FRQU5PZjZCNjRRQUREWXl2ZC80dzljSlFDZ0tlTVAzQ0VBQUNDUUFJQ0dYUC9BWFFJQUJscngvbS84Z1JFRUFEUmkvSUZSQkFBMFlmeUJrUVFBQUFRU0FEREl6UGQvMXo4d21nQ0E0b3cvTUlNQWdNS01QekNMQUFDQVFBSUFCcGp4L3UvNkIyWVNBRkNROFFkbUV3QlFqUEVIVmhBQWNOUEsvLzRYWUJRQkFJVzQvb0ZWQkFBVVlmeUJsUVFBRkdEOGdkVUVBTnpnL1Ivb1NnREFacTUvWUFjQkFCc1pmMkFYQVFDYkdIOWdKd0VBRjkxNS96Zit3RzRDQUFBQ0NRQll6UFVQVkNBQVlDSGpEMVFoQU9DQ0srLy94aCtvUkFBQVFDQUJBQXU0L29GcUJBQk1adnlCaWdRQXZPaVY5My9qRDFRbEFBQWdrQUNBU1Z6L1FHVUNBRjd3N09kLzR3OVVKd0JnTU9NUGRDQUFZQ0RqRDNRaEFBQWdrQUNBSnoxNi8zZjlBNTBJQUJqQStBUGRDQUM0eWZnREhRa0FBQWdrQU9BSjc3My91LzZCcmdRQVhHVDhnYzRFQUZ4Zy9JSHVCQUFBQkJJQThNQmYzLzlkLzhBSkJBQzh3UGdEcHhBQThDVGpENXhFQUFCQUlBRUFIL2pmKzcvckh6aU5BSUFIakQ5d29tKy8vK0hIMzNmL0NBQmdMVjhBQUNDUUFBQ0FRQUlBQUFJSkFBQUlKQUFBSUpBQUFJQkFBZ0FBQWdrQUFBZ2tBQUFna0FBQWdFQUNBQUFDQ1FBQUNDUUFBQ0NRQUFDQVFBSUFBQUlKQUFBSUpBQUFJSkFBQUlCQUFnQUFBZ2tBQUFna0FBQWdrQUFBZ0VBQ0FBQUNDUUFBQ0NRQUFDQ1FBQUNBUUFJQUFBSUpBQUFJSkFBQUlKQUFBSUJBQWdBQUFna0FBQWdrQUFBZ2tBQUFnRUFDQUFBQ0NRQUFDQ1FBQUNDUUFBQ0FRQUlBQUFJSkFBQUlKQUFBSUpBQUFJQkFBZ0FBQWdrQUFBZ2tBQUFna0FBQWdFQUNBQUFDQ1FBQUNDUUFBQ0NRQUFDQVFBSUFBQUlKQUFBSUpBQUFJSkFBQUlCQUFnQUFBZ2tBQUFna0FBQWdrQUFBZ0VEL0JZQWdVcWsvQUxibkFBQUFBRWxGVGtTdVFtQ0MiLCAic2l6ZXMiOiAiNTEyeDUxMiIsICJ0eXBlIjogImltYWdlL3BuZyIsICJwdXJwb3NlIjogImFueSBtYXNrYWJsZSJ9XX0=">
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAESElEQVR4nO3cO3IVSRCG0YLAw9EesMbCB3bFOtgVrIFtjDM2Yyh4w9Xt7qrurPrPsWQoFG3kl516hJ69ev3mS4NQz69+ALiSAIgmAKIJgGgCIJoAiCYAogmAaAIgmgCIJgCiCYBoAiCaAIgmAKIJgGgCIJoAiCYAogmAaAIg2ourHyDZy3f/fPv4v4+fd32ND2//ffJz3n962PW1E3gDTOye4ec2ASzO9r9NAJOy/fsQANEEMCHbvx8BTGbL8Lv/nyYAoglgIk6f/gQwia3D7/y5jwCIJoAJOH3GEcCCnD/3E0Bxtv9YAijM8I8nAKIJoKi929/9v40ACnL6nEcARBNAMUe2v/NnOwEQTQCFuP3PJ4Aijg6/82cfARBNAEQTANEEsAD3/34CIJoAiCaAi/T6mb/z5xgBXMAvvOoQANEEcLKe29/5c5wATuT0qUcARBPASWz/mgQwKfd/HwI4ge1flwAGM/y1CWBCzp9+BDCQ7V+fAAYx/HMQANEEMMDI7e/+70sARBNAZ27/uQigo9HD7/zpTwBEE0AnTp85CWASzp8xBNCB7T8vARxk+OcmAKIJ4ICztr/7fxwB7OT0WYMAiCaAHc7c/s6fsQRANAFs5PZfiwA2OHv4nT/jCYBoAriT02dNAriD4V+XAIpy/5/jxdUPUN1V27/iW2fFKL0BuMuKw9+aAG6quIWvsOrwtyaAvzL8GQTATStv/9YE8Ee2/6PVh781AfzG8D9KGP7WBEA4AfzA9n+Usv1bEwC/SBr+1gTwje2fN/ytCaC1ZviTCYDWWub2b00Atn/LHf7WwgMw/NnD31p4ABAbgO1v+7cWHEA6w/8oMoD07W/4v4sLIH34+VlcAOls/59FBZC+/Q3/72ICMPwPVz9CSTEBwJ9EBGD7P1z9CGVFBJDM8N+2fADJ29/wP235f41YZQiSQ6xs+TdABVcMf5XwqxPAggz//QSwGMO/jQAWYvi3E8BgvvmtTQCLsP33EcACDP9+Apic4T9GAAO5/+sTwMRs/+MEMCnD34cAJmT4+xHAIO7/OQhgMrZ/XwKYiOHvTwCTMPxjCGAA9/88BDAB238cARRn+McSQGc9zx/DP54AiCaAomz/cwigIMN/HgF01OP+N/znEgDRBFCI7X8+ARRh+K8hgE78+cOcBEA0ARBNAEQTQAd77n/f9NYggAsY/joEQDQBnMz2r0UAB225/w1/PQI4ieGvSQBEE8AB954/tn9dAhjM8NcmgIEMf30CIJoAdnrq/rf95yCAAQz/PATQmeGfiwCIJoAd/nb/2/7zEUAnhn9OAujA8M9LAEQTwEa/3v+2/9wEcIDhn58AdjL8axAA0QSwwdf73/ZfhwA2Mvxrefbq9ZsvVz8EXMUbgGgCIJoAiCYAogmAaAIgmgCIJgCiCYBoAiCaAIgmAKIJgGgCIJoAiCYAogmAaAIgmgCIJgCiCYBo/wMTdOqzJgX+ewAAAABJRU5ErkJggg==">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAESElEQVR4nO3cO3IVSRCG0YLAw9EesMbCB3bFOtgVrIFtjDM2Yyh4w9Xt7qrurPrPsWQoFG3kl516hJ69ev3mS4NQz69+ALiSAIgmAKIJgGgCIJoAiCYAogmAaAIgmgCIJgCiCYBoAiCaAIgmAKIJgGgCIJoAiCYAogmAaAIg2ourHyDZy3f/fPv4v4+fd32ND2//ffJz3n962PW1E3gDTOye4ec2ASzO9r9NAJOy/fsQANEEMCHbvx8BTGbL8Lv/nyYAoglgIk6f/gQwia3D7/y5jwCIJoAJOH3GEcCCnD/3E0Bxtv9YAijM8I8nAKIJoKi929/9v40ACnL6nEcARBNAMUe2v/NnOwEQTQCFuP3PJ4Aijg6/82cfARBNAEQTANEEsAD3/34CIJoAiCaAi/T6mb/z5xgBXMAvvOoQANEEcLKe29/5c5wATuT0qUcARBPASWz/mgQwKfd/HwI4ge1flwAGM/y1CWBCzp9+BDCQ7V+fAAYx/HMQANEEMMDI7e/+70sARBNAZ27/uQigo9HD7/zpTwBEE0AnTp85CWASzp8xBNCB7T8vARxk+OcmAKIJ4ICztr/7fxwB7OT0WYMAiCaAHc7c/s6fsQRANAFs5PZfiwA2OHv4nT/jCYBoAriT02dNAriD4V+XAIpy/5/jxdUPUN1V27/iW2fFKL0BuMuKw9+aAG6quIWvsOrwtyaAvzL8GQTATStv/9YE8Ee2/6PVh781AfzG8D9KGP7WBEA4AfzA9n+Usv1bEwC/SBr+1gTwje2fN/ytCaC1ZviTCYDWWub2b00Atn/LHf7WwgMw/NnD31p4ABAbgO1v+7cWHEA6w/8oMoD07W/4v4sLIH34+VlcAOls/59FBZC+/Q3/72ICMPwPVz9CSTEBwJ9EBGD7P1z9CGVFBJDM8N+2fADJ29/wP235f41YZQiSQ6xs+TdABVcMf5XwqxPAggz//QSwGMO/jQAWYvi3E8BgvvmtTQCLsP33EcACDP9+Apic4T9GAAO5/+sTwMRs/+MEMCnD34cAJmT4+xHAIO7/OQhgMrZ/XwKYiOHvTwCTMPxjCGAA9/88BDAB238cARRn+McSQGc9zx/DP54AiCaAomz/cwigIMN/HgF01OP+N/znEgDRBFCI7X8+ARRh+K8hgE78+cOcBEA0ARBNAEQTQAd77n/f9NYggAsY/joEQDQBnMz2r0UAB225/w1/PQI4ieGvSQBEE8AB954/tn9dAhjM8NcmgIEMf30CIJoAdnrq/rf95yCAAQz/PATQmeGfiwCIJoAd/nb/2/7zEUAnhn9OAujA8M9LAEQTwEa/3v+2/9wEcIDhn58AdjL8axAA0QSwwdf73/ZfhwA2Mvxrefbq9ZsvVz8EXMUbgGgCIJoAiCYAogmAaAIgmgCIJgCiCYBoAiCaAIgmAKIJgGgCIJoAiCYAogmAaAIgmgCIJgCiCYBo/wMTdOqzJgX+ewAAAABJRU5ErkJggg==">
+<meta name="theme-color" content="#232F3A">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Elec Split">
+<style>
+  :root{
+    --paper:#EDEAE1;
+    --card:#FBF9F3;
+    --ink:#232F3A;
+    --ink-muted:#726B5C;
+    --line:#D9D1BE;
+    --copper:#B06A2A;
+    --copper-soft:#EFE0CC;
+    --teal:#2E6B63;
+    --teal-soft:#DCE8E5;
+    --danger:#A6432F;
+    --font-serif: Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif;
+    --font-mono: ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--font-serif);
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  .app{
+    max-width:460px;
+    margin:0 auto;
+    padding:28px 18px 60px;
+  }
+  header{margin-bottom:22px;}
+  h1{
+    font-family:var(--font-serif);
+    font-size:26px;
+    font-weight:600;
+    margin:0 0 4px;
+    letter-spacing:0.2px;
+  }
+  .subtitle{
+    color:var(--ink-muted);
+    font-size:14.5px;
+    margin:0;
+    line-height:1.5;
+  }
+  details.setup{
+    margin-bottom:20px;
+    border:1px solid var(--line);
+    border-radius:4px;
+    background:var(--card);
+  }
+  details.setup summary{
+    cursor:pointer;
+    padding:12px 14px;
+    font-size:14px;
+    color:var(--ink-muted);
+    list-style:none;
+  }
+  details.setup summary::-webkit-details-marker{display:none;}
+  .setup-body{
+    padding:0 14px 16px;
+    border-top:1px solid var(--line);
+  }
+  .field-row{margin-top:14px;}
+  label{
+    display:block;
+    font-size:13px;
+    color:var(--ink-muted);
+    margin-bottom:5px;
+  }
+  input[type=text], input[type=month]{
+    width:100%;
+    padding:9px 10px;
+    border:1px solid var(--line);
+    border-radius:4px;
+    background:#fff;
+    font-family:var(--font-mono);
+    font-size:15px;
+    color:var(--ink);
+  }
+  input[type=number]{
+    width:100%;
+    padding:9px 10px;
+    border:1px solid var(--line);
+    border-radius:4px;
+    background:#fff;
+    font-family:var(--font-mono);
+    font-size:16px;
+    font-variant-numeric: tabular-nums;
+    color:var(--ink);
+    text-align:right;
+  }
+  input:focus{
+    outline:2px solid var(--copper);
+    outline-offset:1px;
+  }
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-top:3px solid var(--copper);
+    border-radius:4px;
+    padding:16px 16px 18px;
+    margin-bottom:20px;
+  }
+  .card h2{
+    font-size:15px;
+    font-weight:600;
+    margin:0 0 2px;
+  }
+  .card .hint{
+    font-size:12.5px;
+    color:var(--ink-muted);
+    margin:0 0 14px;
+  }
+  .tenant-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    margin-top:4px;
+  }
+  .tenant-col{
+    border-left:3px solid var(--tenant-color, var(--line));
+    padding-left:10px;
+  }
+  .tenant-col.t1{--tenant-color:var(--copper);}
+  .tenant-col.t2{--tenant-color:var(--teal);}
+  .tenant-col .tname{
+    font-family:var(--font-serif);
+    font-weight:600;
+    font-size:14px;
+    margin-bottom:8px;
+  }
+  .units-preview{
+    font-family:var(--font-mono);
+    font-size:12.5px;
+    color:var(--ink-muted);
+    margin-top:6px;
+    text-align:right;
+  }
+  .error-msg{
+    color:var(--danger);
+    font-size:13px;
+    margin-top:10px;
+    display:none;
+  }
+  button.primary{
+    width:100%;
+    margin-top:16px;
+    padding:12px 14px;
+    background:var(--ink);
+    color:#fff;
+    border:none;
+    border-radius:4px;
+    font-family:var(--font-serif);
+    font-size:15.5px;
+    font-weight:600;
+    cursor:pointer;
+  }
+  button.primary:active{background:#161e26;}
+  button.secondary{
+    background:none;
+    border:1px solid var(--line);
+    color:var(--ink-muted);
+    border-radius:4px;
+    padding:6px 10px;
+    font-size:12.5px;
+    font-family:var(--font-serif);
+    cursor:pointer;
+  }
+  .receipt{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:18px 18px 16px;
+    margin-bottom:20px;
+  }
+  .receipt h2{
+    font-size:15px;
+    font-weight:600;
+    margin:0 0 2px;
+  }
+  .receipt .month-label{
+    color:var(--ink-muted);
+    font-size:13px;
+    margin:0 0 14px;
+  }
+  .receipt-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    padding:7px 0;
+    font-family:var(--font-mono);
+    font-size:14.5px;
+  }
+  .receipt-row .rlabel{
+    font-family:var(--font-serif);
+    font-size:14px;
+    color:var(--ink);
+  }
+  .receipt-row.dim .rlabel, .receipt-row.dim .rval{
+    color:var(--ink-muted);
+    font-size:13px;
+  }
+  .receipt hr{
+    border:none;
+    border-top:1px dashed var(--line);
+    margin:8px 0;
+  }
+  .receipt-row.total{
+    font-weight:700;
+    font-size:16px;
+    border-top:1px solid var(--ink);
+    margin-top:4px;
+    padding-top:10px;
+  }
+  .swatch{
+    display:inline-block;
+    width:8px;height:8px;
+    border-radius:50%;
+    margin-right:7px;
+    vertical-align:middle;
+  }
+  .swatch.t1{background:var(--copper);}
+  .swatch.t2{background:var(--teal);}
+  .tie-note{
+    font-size:12px;
+    color:var(--ink-muted);
+    margin-top:10px;
+    text-align:right;
+  }
+  h3.section-title{
+    font-size:14px;
+    color:var(--ink-muted);
+    font-weight:600;
+    margin:0 0 10px;
+    padding-bottom:8px;
+    border-bottom:1px solid var(--line);
+  }
+  .history-item{
+    border-bottom:1px solid var(--line);
+    padding:12px 0;
+  }
+  .history-item summary{
+    list-style:none;
+    cursor:pointer;
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+  }
+  .history-item summary::-webkit-details-marker{display:none;}
+  .history-item .h-month{
+    font-family:var(--font-serif);
+    font-size:14.5px;
+    font-weight:600;
+  }
+  .history-item .h-total{
+    font-family:var(--font-mono);
+    font-size:14.5px;
+  }
+  .history-detail{
+    margin-top:10px;
+    font-family:var(--font-mono);
+    font-size:13px;
+  }
+  .history-detail .drow{
+    display:flex;
+    justify-content:space-between;
+    padding:3px 0;
+  }
+  .history-detail .drow .dlabel{font-family:var(--font-serif);color:var(--ink-muted);}
+  .history-actions{margin-top:10px;text-align:right;}
+  .empty-note{
+    color:var(--ink-muted);
+    font-size:13.5px;
+    padding:14px 0;
+  }
+  .status-line{
+    font-size:12px;
+    color:var(--ink-muted);
+    text-align:center;
+    margin-top:26px;
+  }
+  footer{
+    margin-top:30px;
+    text-align:center;
+    color:var(--ink-muted);
+    font-size:12px;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header>
+    <h1>Electricity Split</h1>
+    <p class="subtitle">One shared bill, divided fairly by each family's submeter reading.</p>
+  </header>
+
+  <details class="setup" id="setupDetails">
+    <summary>Household setup</summary>
+    <div class="setup-body">
+      <div class="field-row">
+        <label for="tenant1Name">Meter 1 — family name</label>
+        <input type="text" id="tenant1Name" />
+      </div>
+      <div class="field-row">
+        <label for="tenant2Name">Meter 2 — family name</label>
+        <input type="text" id="tenant2Name" />
+      </div>
+    </div>
+  </details>
+
+  <div class="card">
+    <h2>This month's readings</h2>
+    <p class="hint">Previous reading is filled in from last month automatically — check it's correct.</p>
+
+    <div class="field-row">
+      <label for="monthInput">Bill month</label>
+      <input type="month" id="monthInput" />
+    </div>
+
+    <div class="tenant-grid">
+      <div class="tenant-col t1">
+        <div class="tname" id="t1Label">Family A</div>
+        <label for="prev1">Previous reading</label>
+        <input type="number" id="prev1" step="0.01" inputmode="decimal" />
+        <div class="field-row">
+          <label for="curr1">Current reading</label>
+          <input type="number" id="curr1" step="0.01" inputmode="decimal" />
+        </div>
+        <div class="units-preview" id="units1Preview">—</div>
+      </div>
+      <div class="tenant-col t2">
+        <div class="tname" id="t2Label">Family B</div>
+        <label for="prev2">Previous reading</label>
+        <input type="number" id="prev2" step="0.01" inputmode="decimal" />
+        <div class="field-row">
+          <label for="curr2">Current reading</label>
+          <input type="number" id="curr2" step="0.01" inputmode="decimal" />
+        </div>
+        <div class="units-preview" id="units2Preview">—</div>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <label for="totalBill">Total bill amount (Rs.)</label>
+      <input type="number" id="totalBill" step="0.01" inputmode="decimal" />
+    </div>
+
+    <p class="error-msg" id="errorMsg"></p>
+
+    <button class="primary" id="calcBtn">Calculate &amp; save this month</button>
+  </div>
+
+  <div class="receipt" id="resultBlock" style="display:none;">
+    <h2>Bill breakdown</h2>
+    <p class="month-label" id="resultMonthLabel"></p>
+
+    <div class="receipt-row dim">
+      <span class="rlabel"><span class="swatch t1"></span><span id="r1NameUnits">Family A</span> units</span>
+      <span class="rval" id="r1Units">—</span>
+    </div>
+    <div class="receipt-row dim">
+      <span class="rlabel"><span class="swatch t2"></span><span id="r2NameUnits">Family B</span> units</span>
+      <span class="rval" id="r2Units">—</span>
+    </div>
+    <div class="receipt-row dim">
+      <span class="rlabel">Total units</span>
+      <span class="rval" id="rTotalUnits">—</span>
+    </div>
+    <hr/>
+    <div class="receipt-row">
+      <span class="rlabel"><span class="swatch t1"></span><span id="r1NameShare">Family A</span> owes</span>
+      <span class="rval" id="r1Share">—</span>
+    </div>
+    <div class="receipt-row">
+      <span class="rlabel"><span class="swatch t2"></span><span id="r2NameShare">Family B</span> owes</span>
+      <span class="rval" id="r2Share">—</span>
+    </div>
+    <div class="receipt-row total">
+      <span class="rlabel">Total bill</span>
+      <span class="rval" id="rTotalBill">—</span>
+    </div>
+    <p class="tie-note" id="tieNote"></p>
+  </div>
+
+  <div>
+    <h3 class="section-title">Past months</h3>
+    <div id="historyList"></div>
+    <p class="empty-note" id="historyEmpty" style="display:none;">No past months saved yet. Once you calculate a bill, it will show up here.</p>
+  </div>
+
+  <p class="status-line" id="statusLine"></p>
+
+  <footer>Readings and history are saved on this device only.</footer>
+</div>
+
+<script>
+(function(){
+  const els = {
+    t1Name: document.getElementById('tenant1Name'),
+    t2Name: document.getElementById('tenant2Name'),
+    t1Label: document.getElementById('t1Label'),
+    t2Label: document.getElementById('t2Label'),
+    setupSummary: document.querySelector('#setupDetails summary'),
+    monthInput: document.getElementById('monthInput'),
+    prev1: document.getElementById('prev1'),
+    curr1: document.getElementById('curr1'),
+    prev2: document.getElementById('prev2'),
+    curr2: document.getElementById('curr2'),
+    totalBill: document.getElementById('totalBill'),
+    units1Preview: document.getElementById('units1Preview'),
+    units2Preview: document.getElementById('units2Preview'),
+    errorMsg: document.getElementById('errorMsg'),
+    calcBtn: document.getElementById('calcBtn'),
+    resultBlock: document.getElementById('resultBlock'),
+    resultMonthLabel: document.getElementById('resultMonthLabel'),
+    r1NameUnits: document.getElementById('r1NameUnits'),
+    r2NameUnits: document.getElementById('r2NameUnits'),
+    r1NameShare: document.getElementById('r1NameShare'),
+    r2NameShare: document.getElementById('r2NameShare'),
+    r1Units: document.getElementById('r1Units'),
+    r2Units: document.getElementById('r2Units'),
+    rTotalUnits: document.getElementById('rTotalUnits'),
+    r1Share: document.getElementById('r1Share'),
+    r2Share: document.getElementById('r2Share'),
+    rTotalBill: document.getElementById('rTotalBill'),
+    tieNote: document.getElementById('tieNote'),
+    historyList: document.getElementById('historyList'),
+    historyEmpty: document.getElementById('historyEmpty'),
+    statusLine: document.getElementById('statusLine'),
+  };
+
+  let config = { tenant1: 'Family A', tenant2: 'Family B' };
+  let records = [];
+
+  function fmtMoney(n){
+    return 'Rs. ' + n.toLocaleString('en-IN', {minimumFractionDigits:0, maximumFractionDigits:2});
+  }
+  function fmtUnits(n){
+    return n.toLocaleString('en-IN', {minimumFractionDigits:0, maximumFractionDigits:2}) + ' units';
+  }
+  function monthLabelFromValue(v){
+    if(!v) return '';
+    const [y,m] = v.split('-').map(Number);
+    const d = new Date(y, m-1, 1);
+    return d.toLocaleDateString('en-IN', {month:'long', year:'numeric'});
+  }
+  function currentMonthValue(){
+    const d = new Date();
+    const y = d.getFullYear();
+    const m = String(d.getMonth()+1).padStart(2,'0');
+    return y + '-' + m;
+  }
+  function setStatus(msg){
+    els.statusLine.textContent = msg;
+    if(msg){ setTimeout(()=>{ if(els.statusLine.textContent===msg) els.statusLine.textContent=''; }, 3000); }
+  }
+
+  const LS_CONFIG = 'elecsplit_config';
+  const LS_RECORDS = 'elecsplit_records';
+
+  async function loadAll(){
+    try{
+      const raw = localStorage.getItem(LS_CONFIG);
+      if(raw){ config = JSON.parse(raw); }
+    }catch(e){ /* no config saved yet */ }
+    try{
+      const raw = localStorage.getItem(LS_RECORDS);
+      if(raw){ records = JSON.parse(raw); }
+    }catch(e){ /* no records saved yet */ }
+
+    applyConfigToUI();
+    prefillFromHistory();
+    renderHistory();
+  }
+
+  function applyConfigToUI(){
+    els.t1Name.value = config.tenant1;
+    els.t2Name.value = config.tenant2;
+    els.t1Label.textContent = config.tenant1;
+    els.t2Label.textContent = config.tenant2;
+    els.r1NameUnits.textContent = config.tenant1;
+    els.r2NameUnits.textContent = config.tenant2;
+    els.r1NameShare.textContent = config.tenant1;
+    els.r2NameShare.textContent = config.tenant2;
+  }
+
+  async function saveConfig(){
+    try{
+      localStorage.setItem(LS_CONFIG, JSON.stringify(config));
+    }catch(e){ setStatus("Couldn't save the names — try again."); }
+  }
+
+  els.t1Name.addEventListener('change', ()=>{
+    config.tenant1 = els.t1Name.value.trim() || 'Family A';
+    applyConfigToUI();
+    saveConfig();
+  });
+  els.t2Name.addEventListener('change', ()=>{
+    config.tenant2 = els.t2Name.value.trim() || 'Family B';
+    applyConfigToUI();
+    saveConfig();
+  });
+
+  function prefillFromHistory(){
+    els.monthInput.value = currentMonthValue();
+    if(records.length){
+      const last = records[records.length-1];
+      els.prev1.value = last.curr1;
+      els.prev2.value = last.curr2;
+    }
+    updateUnitsPreview();
+  }
+
+  function updateUnitsPreview(){
+    const p1 = parseFloat(els.prev1.value), c1 = parseFloat(els.curr1.value);
+    const p2 = parseFloat(els.prev2.value), c2 = parseFloat(els.curr2.value);
+    els.units1Preview.textContent = (isFinite(p1) && isFinite(c1) && c1>=p1) ? fmtUnits(c1-p1) : '—';
+    els.units2Preview.textContent = (isFinite(p2) && isFinite(c2) && c2>=p2) ? fmtUnits(c2-p2) : '—';
+  }
+  [els.prev1, els.curr1, els.prev2, els.curr2].forEach(el=>{
+    el.addEventListener('input', updateUnitsPreview);
+  });
+
+  function showError(msg){
+    els.errorMsg.textContent = msg;
+    els.errorMsg.style.display = msg ? 'block' : 'none';
+  }
+
+  function computeShares(units1, units2, totalBill){
+    const totalUnits = units1 + units2;
+    const raw1 = totalBill * (units1/totalUnits);
+    const share1 = Math.round(raw1 * 100) / 100;
+    const share2 = Math.round((totalBill - share1) * 100) / 100;
+    return { totalUnits, share1, share2 };
+  }
+
+  els.calcBtn.addEventListener('click', async ()=>{
+    showError('');
+    const monthVal = els.monthInput.value;
+    const prev1 = parseFloat(els.prev1.value);
+    const curr1 = parseFloat(els.curr1.value);
+    const prev2 = parseFloat(els.prev2.value);
+    const curr2 = parseFloat(els.curr2.value);
+    const totalBill = parseFloat(els.totalBill.value);
+
+    if(!monthVal){ showError('Pick the bill month first.'); return; }
+    if(![prev1,curr1,prev2,curr2,totalBill].every(isFinite)){
+      showError('Fill in both previous and current readings, and the total bill amount.');
+      return;
+    }
+    if(curr1 < prev1 || curr2 < prev2){
+      showError('Current reading cannot be lower than the previous reading.');
+      return;
+    }
+    const units1 = curr1 - prev1;
+    const units2 = curr2 - prev2;
+    if(units1 + units2 <= 0){
+      showError('At least one meter needs to show some units consumed.');
+      return;
+    }
+    if(totalBill <= 0){
+      showError('Enter the total bill amount from the electricity bill.');
+      return;
+    }
+
+    const { totalUnits, share1, share2 } = computeShares(units1, units2, totalBill);
+    const monthLabel = monthLabelFromValue(monthVal);
+
+    const record = {
+      id: Date.now().toString(),
+      monthVal, monthLabel,
+      tenant1: config.tenant1, tenant2: config.tenant2,
+      prev1, curr1, units1,
+      prev2, curr2, units2,
+      totalUnits, totalBill, share1, share2,
+    };
+
+    records.push(record);
+    records.sort((a,b)=> a.monthVal.localeCompare(b.monthVal));
+
+    try{
+      localStorage.setItem(LS_RECORDS, JSON.stringify(records));
+      setStatus('Saved.');
+    }catch(e){
+      setStatus("Couldn't save this month — your browser storage may be full.");
+    }
+
+    renderResult(record);
+    renderHistory();
+  });
+
+  function renderResult(r){
+    els.resultBlock.style.display = 'block';
+    els.resultMonthLabel.textContent = r.monthLabel;
+    els.r1NameUnits.textContent = r.tenant1;
+    els.r2NameUnits.textContent = r.tenant2;
+    els.r1NameShare.textContent = r.tenant1;
+    els.r2NameShare.textContent = r.tenant2;
+    els.r1Units.textContent = fmtUnits(r.units1);
+    els.r2Units.textContent = fmtUnits(r.units2);
+    els.rTotalUnits.textContent = fmtUnits(r.totalUnits);
+    els.r1Share.textContent = fmtMoney(r.share1);
+    els.r2Share.textContent = fmtMoney(r.share2);
+    els.rTotalBill.textContent = fmtMoney(r.totalBill);
+    els.tieNote.textContent = (Math.round((r.share1+r.share2)*100)/100 === Math.round(r.totalBill*100)/100)
+      ? 'Shares add up exactly to the bill.'
+      : '';
+    els.resultBlock.scrollIntoView({behavior:'smooth', block:'nearest'});
+  }
+
+  async function deleteRecord(id){
+    records = records.filter(r=>r.id!==id);
+    try{
+      localStorage.setItem(LS_RECORDS, JSON.stringify(records));
+    }catch(e){ setStatus("Couldn't update history — try again."); }
+    renderHistory();
+    prefillFromHistory();
+  }
+
+  function renderHistory(){
+    els.historyList.innerHTML = '';
+    if(!records.length){
+      els.historyEmpty.style.display = 'block';
+      return;
+    }
+    els.historyEmpty.style.display = 'none';
+
+    [...records].reverse().forEach(r=>{
+      const details = document.createElement('details');
+      details.className = 'history-item';
+
+      const summary = document.createElement('summary');
+      summary.innerHTML = '<span class="h-month">'+r.monthLabel+'</span><span class="h-total">'+fmtMoney(r.totalBill)+'</span>';
+      details.appendChild(summary);
+
+      const detail = document.createElement('div');
+      detail.className = 'history-detail';
+      detail.innerHTML =
+        '<div class="drow"><span class="dlabel">'+r.tenant1+' reading</span><span>'+r.prev1+' → '+r.curr1+' ('+fmtUnits(r.units1)+')</span></div>'+
+        '<div class="drow"><span class="dlabel">'+r.tenant2+' reading</span><span>'+r.prev2+' → '+r.curr2+' ('+fmtUnits(r.units2)+')</span></div>'+
+        '<div class="drow"><span class="dlabel">'+r.tenant1+' share</span><span>'+fmtMoney(r.share1)+'</span></div>'+
+        '<div class="drow"><span class="dlabel">'+r.tenant2+' share</span><span>'+fmtMoney(r.share2)+'</span></div>';
+      details.appendChild(detail);
+
+      const actions = document.createElement('div');
+      actions.className = 'history-actions';
+      const delBtn = document.createElement('button');
+      delBtn.className = 'secondary';
+      delBtn.textContent = 'Delete this month';
+      delBtn.addEventListener('click', (e)=>{
+        e.preventDefault();
+        deleteRecord(r.id);
+      });
+      actions.appendChild(delBtn);
+      detail.appendChild(actions);
+
+      els.historyList.appendChild(details);
+    });
+  }
+
+  loadAll();
+
+  if('serviceWorker' in navigator){
+    window.addEventListener('load', ()=>{
+      navigator.serviceWorker.register('sw.js').catch(()=>{ /* offline caching unavailable, app still works online */ });
+    });
+  }
+})();
+</script>
+</body>
+</html>
