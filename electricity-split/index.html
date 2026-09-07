@@ -333,22 +333,22 @@
 
     <div class="tenant-grid">
       <div class="tenant-col t1">
-        <div class="tname" id="t1Label">Family A</div>
-        <label for="prev1">Previous reading</label>
-        <input type="number" id="prev1" step="0.01" inputmode="decimal" />
+        <div class="tname" id="t1Label">Lipi</div>
+        <label for="curr1">Current reading</label>
+        <input type="number" id="curr1" step="0.01" inputmode="decimal" />
         <div class="field-row">
-          <label for="curr1">Current reading</label>
-          <input type="number" id="curr1" step="0.01" inputmode="decimal" />
+          <label for="prev1">Previous reading</label>
+          <input type="number" id="prev1" step="0.01" inputmode="decimal" />
         </div>
         <div class="units-preview" id="units1Preview">—</div>
       </div>
       <div class="tenant-col t2">
-        <div class="tname" id="t2Label">Family B</div>
-        <label for="prev2">Previous reading</label>
-        <input type="number" id="prev2" step="0.01" inputmode="decimal" />
+        <div class="tname" id="t2Label">Manisha</div>
+        <label for="curr2">Current reading</label>
+        <input type="number" id="curr2" step="0.01" inputmode="decimal" />
         <div class="field-row">
-          <label for="curr2">Current reading</label>
-          <input type="number" id="curr2" step="0.01" inputmode="decimal" />
+          <label for="prev2">Previous reading</label>
+          <input type="number" id="prev2" step="0.01" inputmode="decimal" />
         </div>
         <div class="units-preview" id="units2Preview">—</div>
       </div>
@@ -369,11 +369,11 @@
     <p class="month-label" id="resultMonthLabel"></p>
 
     <div class="receipt-row dim">
-      <span class="rlabel"><span class="swatch t1"></span><span id="r1NameUnits">Family A</span> units</span>
+      <span class="rlabel"><span class="swatch t1"></span><span id="r1NameUnits">Lipi</span> units</span>
       <span class="rval" id="r1Units">—</span>
     </div>
     <div class="receipt-row dim">
-      <span class="rlabel"><span class="swatch t2"></span><span id="r2NameUnits">Family B</span> units</span>
+      <span class="rlabel"><span class="swatch t2"></span><span id="r2NameUnits">Manisha</span> units</span>
       <span class="rval" id="r2Units">—</span>
     </div>
     <div class="receipt-row dim">
@@ -382,11 +382,11 @@
     </div>
     <hr/>
     <div class="receipt-row">
-      <span class="rlabel"><span class="swatch t1"></span><span id="r1NameShare">Family A</span> owes</span>
+      <span class="rlabel"><span class="swatch t1"></span><span id="r1NameShare">Lipi</span> owes</span>
       <span class="rval" id="r1Share">—</span>
     </div>
     <div class="receipt-row">
-      <span class="rlabel"><span class="swatch t2"></span><span id="r2NameShare">Family B</span> owes</span>
+      <span class="rlabel"><span class="swatch t2"></span><span id="r2NameShare">Manisha</span> owes</span>
       <span class="rval" id="r2Share">—</span>
     </div>
     <div class="receipt-row total">
@@ -443,11 +443,11 @@
     statusLine: document.getElementById('statusLine'),
   };
 
-  let config = { tenant1: 'Family A', tenant2: 'Family B' };
+  let config = { tenant1: 'Lipi', tenant2: 'Manisha' };
   let records = [];
 
   function fmtMoney(n){
-    return 'Rs. ' + n.toLocaleString('en-IN', {minimumFractionDigits:0, maximumFractionDigits:2});
+    return 'Rs. ' + Math.round(n).toLocaleString('en-IN', {minimumFractionDigits:0, maximumFractionDigits:0});
   }
   function fmtUnits(n){
     return n.toLocaleString('en-IN', {minimumFractionDigits:0, maximumFractionDigits:2}) + ' units';
@@ -505,12 +505,12 @@
   }
 
   els.t1Name.addEventListener('change', ()=>{
-    config.tenant1 = els.t1Name.value.trim() || 'Family A';
+    config.tenant1 = els.t1Name.value.trim() || 'Lipi';
     applyConfigToUI();
     saveConfig();
   });
   els.t2Name.addEventListener('change', ()=>{
-    config.tenant2 = els.t2Name.value.trim() || 'Family B';
+    config.tenant2 = els.t2Name.value.trim() || 'Manisha';
     applyConfigToUI();
     saveConfig();
   });
@@ -543,9 +543,10 @@
   function computeShares(units1, units2, totalBill){
     const totalUnits = units1 + units2;
     const raw1 = totalBill * (units1/totalUnits);
-    const share1 = Math.round(raw1 * 100) / 100;
-    const share2 = Math.round((totalBill - share1) * 100) / 100;
-    return { totalUnits, share1, share2 };
+    const roundedBill = Math.round(totalBill);
+    const share1 = Math.round(raw1);
+    const share2 = roundedBill - share1;
+    return { totalUnits, share1, share2, roundedBill };
   }
 
   els.calcBtn.addEventListener('click', async ()=>{
@@ -577,7 +578,7 @@
       return;
     }
 
-    const { totalUnits, share1, share2 } = computeShares(units1, units2, totalBill);
+    const { totalUnits, share1, share2, roundedBill } = computeShares(units1, units2, totalBill);
     const monthLabel = monthLabelFromValue(monthVal);
 
     const record = {
@@ -586,7 +587,7 @@
       tenant1: config.tenant1, tenant2: config.tenant2,
       prev1, curr1, units1,
       prev2, curr2, units2,
-      totalUnits, totalBill, share1, share2,
+      totalUnits, totalBill: roundedBill, share1, share2,
     };
 
     records.push(record);
@@ -616,7 +617,7 @@
     els.r1Share.textContent = fmtMoney(r.share1);
     els.r2Share.textContent = fmtMoney(r.share2);
     els.rTotalBill.textContent = fmtMoney(r.totalBill);
-    els.tieNote.textContent = (Math.round((r.share1+r.share2)*100)/100 === Math.round(r.totalBill*100)/100)
+    els.tieNote.textContent = ((r.share1 + r.share2) === Math.round(r.totalBill))
       ? 'Shares add up exactly to the bill.'
       : '';
     els.resultBlock.scrollIntoView({behavior:'smooth', block:'nearest'});
