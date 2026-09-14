@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Reset</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F1ECE1;
+    --card: #FFFFFF;
+    --ink: #2B2620;
+    --ink-soft: #746A5B;
+    --ink-faint: #A79C8B;
+    --moss: #5C7A5B;
+    --moss-soft: #DEE6D8;
+    --gold: #C99A3F;
+    --rose: #B5716B;
+    --border: #E4DDCD;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Work Sans', -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 460px;
+    margin: 0 auto;
+    padding: 28px 18px 60px;
+  }
+  .title {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 26px;
+    margin: 0 0 4px;
+    letter-spacing: -0.01em;
+  }
+  .subtitle {
+    color: var(--ink-soft);
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0 0 22px;
+    max-width: 34ch;
+  }
+  .hero {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .hero .num {
+    font-family: 'Fraunces', serif;
+    font-size: 40px;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .hero .of {
+    color: var(--ink-faint);
+    font-size: 14px;
+  }
+  .hero .label {
+    margin-left: auto;
+    text-align: right;
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+  .hero .label strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .tabs {
+    display: flex;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 4px;
+    margin: 18px 0 20px;
+  }
+  .tab {
+    flex: 1;
+    text-align: center;
+    padding: 9px 0;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    color: var(--ink-soft);
+    user-select: none;
+    transition: background 0.2s, color 0.2s;
+  }
+  .tab.active {
+    background: var(--ink);
+    color: #fff;
+  }
+  .daynav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .daynav button {
+    background: var(--card);
+    border: 1px solid var(--border);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 15px;
+    color: var(--ink);
+  }
+  .daynav button:disabled {
+    opacity: 0.3;
+    cursor: default;
+  }
+  .daynav .datestr {
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .group {
+    margin-bottom: 22px;
+  }
+  .group h3 {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink-faint);
+    margin: 0 0 8px 4px;
+  }
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-bottom: 8px;
+  }
+  .check {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 1.5px solid var(--ink-faint);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .check.checked {
+    background: var(--moss);
+    border-color: var(--moss);
+    animation: pop 0.25s ease;
+  }
+  .check svg { width: 13px; height: 13px; display: none; }
+  .check.checked svg { display: block; }
+  @keyframes pop {
+    0% { transform: scale(0.7); }
+    60% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+  }
+  .rowtext { flex: 1; font-size: 14.5px; }
+  .rownote {
+    width: 100%;
+    margin-top: 8px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 7px 10px;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--ink);
+    background: #FBF9F4;
+  }
+  .rownote::placeholder { color: var(--ink-faint); }
+  .noteRow { display: flex; flex-wrap: wrap; }
+  .noteHint { font-size: 11.5px; color: var(--ink-faint); width: 100%; margin-top: 4px; }
+
+  .monthgrid {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 10px;
+    overflow-x: auto;
+  }
+  table { border-collapse: collapse; font-size: 12px; }
+  th, td { padding: 3px 4px; text-align: center; }
+  th.habitcol, td.habitcol {
+    position: sticky;
+    left: 0;
+    background: var(--card);
+    text-align: left;
+    padding-right: 10px;
+    font-size: 12px;
+    font-weight: 500;
+    max-width: 110px;
+  }
+  th.daynum { color: var(--ink-faint); font-weight: 400; font-size: 10.5px; }
+  .dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1.3px solid var(--ink-faint);
+    display: inline-block;
+    cursor: pointer;
+  }
+  .dot.on { background: var(--moss); border-color: var(--moss); }
+  .pct { color: var(--ink-soft); padding-left: 10px; font-size: 12px; white-space: nowrap; }
+  .resetlink {
+    display: block;
+    text-align: center;
+    margin-top: 18px;
+    font-size: 12.5px;
+    color: var(--rose);
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .loading { text-align: center; color: var(--ink-soft); padding: 40px 0; font-size: 14px; }
+</style>
+</head>
+<body>
+<div class="wrap" id="app">
+  <div class="loading">Loading your tracker…</div>
+</div>
+
+<script>
+const STORAGE_KEY = 'tracker-data';
+
+const HABITS = [
+  { id: 'sunlight',    label: '10 minutes of sunlight', group: 'Morning' },
+  { id: 'medMorning',  label: 'Morning medicine (9am)',  group: 'Morning' },
+  { id: 'newspaper',   label: 'Read the newspaper',      group: 'Morning' },
+  { id: 'exercise',    label: 'Move — yoga, breathing, or gym', group: 'Anytime' },
+  { id: 'pmr',         label: 'Progressive muscle relaxation', group: 'Anytime' },
+  { id: 'diet',        label: "Log today's meals", group: 'Anytime', note: true },
+  { id: 'walk',        label: 'Walk after eating',       group: 'Anytime' },
+  { id: 'manifest',    label: 'Take a moment to manifest', group: 'Anytime' },
+  { id: 'medEvening',  label: 'Evening medicine',        group: 'Evening & night' },
+  { id: 'medNight',    label: 'Night medicine',          group: 'Evening & night' },
+  { id: 'skincare',    label: 'Skincare',                group: 'Evening & night' },
+];
+const GROUPS = ['Morning', 'Anytime', 'Evening & night'];
+const GOAL_DAYS = 30;
+
+let state = null;
+let viewTab = 'today';
+let viewDate = todayISO();
+
+function todayISO() {
+  const d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+function isoToDate(iso) { const [y,m,d] = iso.split('-').map(Number); return new Date(y, m-1, d); }
+function addDays(iso, n) { const d = isoToDate(iso); d.setDate(d.getDate()+n); return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
+function dayIndex(iso) { return Math.round((isoToDate(iso) - isoToDate(state.startDate)) / 86400000) + 1; }
+function fmtDate(iso) { return isoToDate(iso).toLocaleDateString(undefined, { weekday:'short', month:'short', day:'numeric' }); }
+
+async function loadState() {
+  try {
+    const res = await window.storage.get(STORAGE_KEY, false);
+    state = JSON.parse(res.value);
+  } catch (e) {
+    state = { startDate: todayISO(), days: {} };
+    await saveState();
+  }
+}
+async function saveState() {
+  try {
+    await window.storage.set(STORAGE_KEY, JSON.stringify(state), false);
+  } catch (e) {
+    console.error('Save failed', e);
+  }
+}
+function dayData(iso) {
+  if (!state.days[iso]) state.days[iso] = {};
+  return state.days[iso];
+}
+function habitPercent(habitId) {
+  const start = isoToDate(state.startDate), end = isoToDate(todayISO());
+  const totalDays = Math.round((end - start) / 86400000) + 1;
+  let done = 0;
+  for (let i = 0; i < totalDays; i++) {
+    const iso = addDays(state.startDate, i);
+    if (state.days[iso] && state.days[iso][habitId]) done++;
+  }
+  return totalDays ? Math.round((done / totalDays) * 100) : 0;
+}
+function dayCompletion(iso) {
+  const d = state.days[iso] || {};
+  const done = HABITS.filter(h => d[h.id]).length;
+  return { done, total: HABITS.length };
+}
+function monthAverage() {
+  const pcts = HABITS.map(h => habitPercent(h.id));
+  return Math.round(pcts.reduce((a,b)=>a+b,0) / pcts.length);
+}
+
+async function toggleHabit(iso, habitId) {
+  const d = dayData(iso);
+  d[habitId] = !d[habitId];
+  await saveState();
+  render();
+}
+async function updateNote(iso, val) {
+  const d = dayData(iso);
+  d.dietNote = val;
+  await saveState();
+}
+
+function render() {
+  const app = document.getElementById('app');
+  const idx = dayIndex(viewDate);
+  const { done, total } = dayCompletion(viewDate);
+  const avg = monthAverage();
+
+  app.innerHTML = `
+    <div class="title">Daily Reset</div>
+    <div class="subtitle">Eleven small habits, tracked for one month — for a calmer, healthier, more consistent you.</div>
+
+    <div class="hero">
+      <div class="num">${idx}</div>
+      <div class="of">of ${GOAL_DAYS} days</div>
+      <div class="label">${done} of ${total} today<br><strong>${avg}%</strong> average this month</div>
+    </div>
+
+    <div class="tabs">
+      <div class="tab ${viewTab==='today'?'active':''}" data-tab="today">Today</div>
+      <div class="tab ${viewTab==='month'?'active':''}" data-tab="month">Month view</div>
+    </div>
+
+    ${viewTab === 'today' ? renderToday() : renderMonth()}
+  `;
+  attachHandlers();
+}
+
+function renderToday() {
+  const canGoFwd = viewDate < todayISO();
+  const canGoBack = viewDate > state.startDate;
+  const d = dayData(viewDate);
+
+  let html = `
+    <div class="daynav">
+      <button data-nav="-1" ${canGoBack?'':'disabled'}>‹</button>
+      <div class="datestr">${fmtDate(viewDate)}${viewDate===todayISO()?' · Today':''}</div>
+      <button data-nav="1" ${canGoFwd?'':'disabled'}>›</button>
+    </div>
+  `;
+
+  GROUPS.forEach(group => {
+    html += `<div class="group"><h3>${group}</h3>`;
+    HABITS.filter(h => h.group === group).forEach(h => {
+      const checked = !!d[h.id];
+      html += `
+        <div class="row">
+          <div class="check ${checked?'checked':''}" data-toggle="${h.id}">
+            <svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.2 12 13 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="noteRow">
+            <div class="rowtext">${h.label}</div>
+            ${h.note ? `<input class="rownote" data-note="${h.id}" placeholder="What did you eat today? (gist only — detail lives in your diet app)" value="${(d.dietNote||'').replace(/"/g,'&quot;')}">` : ''}
+          </div>
+        </div>
+      `;
+    });
+    html += `</div>`;
+  });
+
+  return html;
+}
+
+function renderMonth() {
+  const start = state.startDate, end = todayISO();
+  const totalDays = Math.round((isoToDate(end) - isoToDate(start)) / 86400000) + 1;
+  const days = Array.from({length: totalDays}, (_, i) => addDays(start, i));
+
+  let html = `<div class="monthgrid"><table><thead><tr><th class="habitcol"></th>`;
+  days.forEach((iso) => {
+    html += `<th class="daynum">${isoToDate(iso).getDate()}</th>`;
+  });
+  html += `<th></th></tr></thead><tbody>`;
+
+  HABITS.forEach(h => {
+    html += `<tr><td class="habitcol">${h.label}</td>`;
+    days.forEach(iso => {
+      const on = !!(state.days[iso] && state.days[iso][h.id]);
+      html += `<td><span class="dot ${on?'on':''}" data-gridtoggle="${iso}|${h.id}"></span></td>`;
+    });
+    html += `<td class="pct">${habitPercent(h.id)}%</td></tr>`;
+  });
+
+  html += `</tbody></table></div>
+    <div class="resetlink" id="resetBtn">Start a new ${GOAL_DAYS} days</div>`;
+  return html;
+}
+
+function attachHandlers() {
+  document.querySelectorAll('[data-tab]').forEach(el => {
+    el.onclick = () => { viewTab = el.dataset.tab; render(); };
+  });
+  document.querySelectorAll('[data-nav]').forEach(el => {
+    el.onclick = () => { viewDate = addDays(viewDate, parseInt(el.dataset.nav)); render(); };
+  });
+  document.querySelectorAll('[data-toggle]').forEach(el => {
+    el.onclick = () => toggleHabit(viewDate, el.dataset.toggle);
+  });
+  document.querySelectorAll('[data-gridtoggle]').forEach(el => {
+    el.onclick = () => {
+      const [iso, habitId] = el.dataset.gridtoggle.split('|');
+      toggleHabit(iso, habitId);
+    };
+  });
+  document.querySelectorAll('[data-note]').forEach(el => {
+    el.onchange = () => updateNote(viewDate, el.value);
+  });
+  const resetBtn = document.getElementById('resetBtn');
+  if (resetBtn) {
+    resetBtn.onclick = async () => {
+      if (confirm('Start a fresh ' + GOAL_DAYS + '-day tracking period? This clears everything logged so far.')) {
+        state = { startDate: todayISO(), days: {} };
+        await saveState();
+        viewDate = todayISO();
+        viewTab = 'today';
+        render();
+      }
+    };
+  }
+}
+
+(async function init() {
+  await loadState();
+  render();
+})();
+</script>
+</body>
+</html>
